@@ -26,4 +26,4 @@ jobs:
         push: true
         tags: |
           ghcr.io/jkmn-projects/teamtactics_frontend:${{ github.run_number }}
-          ghcr.io/jkmn-projects/teamtactics_frontend::latest
+          ghcr.io/jkmn-projects/teamtactics_frontend:latest
