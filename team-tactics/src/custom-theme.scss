@@ -1,25 +1,108 @@
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$team-tactics-primary: mat.define-palette(mat.$indigo-palette);
-$team-tactics-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+// Define custom palettes with exact colors
+$team-tactics-primary: mat.define-palette((
+  50: #e0f2ed,
+  100: #b3dfd4,
+  200: #80cbb9,
+  300: #4db79e,
+  400: #26a789,
+  500: #458773, // Exact primary color
+  600: #3d7b69,
+  700: #336b5b,
+  800: #295a4c,
+  900: #1b3f34,
+  A100: #b3dfd4,
+  A200: #80cbb9,
+  A400: #26a789,
+  A700: #336b5b,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  )
+));
 
-// The warn palette is optional (defaults to red).
-$team-tactics-warn: mat.define-palette(mat.$red-palette);
+$team-tactics-accent: mat.define-palette((
+  50: #e0e8e6,
+  100: #b3c5c0,
+  200: #809e97,
+  300: #4d776e,
+  400: #265a50,
+  500: #23433A, // Exact accent color
+  600: #1f3b34,
+  700: #1a322c,
+  800: #152924,
+  900: #0e1b17,
+  A100: #b3c5c0,
+  A200: #809e97,
+  A400: #265a50,
+  A700: #1a322c,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  )
+));
 
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
+$team-tactics-warn: mat.define-palette((
+  50: #f4f0e0,
+  100: #e4d9b3,
+  200: #d3c080,
+  300: #c1a74d,
+  400: #b49426,
+  500: #887634, // Exact warn color
+  600: #7b6a2f,
+  700: #6b5b29,
+  800: #5a4c23,
+  900: #3f3618,
+  A100: #e4d9b3,
+  A200: #d3c080,
+  A400: #b49426,
+  A700: #6b5b29,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  )
+));
+
+// Create the theme with custom palettes
 $team-tactics-theme: mat.define-light-theme((
   color: (
     primary: $team-tactics-primary,
@@ -30,8 +113,4 @@ $team-tactics-theme: mat.define-light-theme((
   density: 0
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
 @include mat.all-component-themes($team-tactics-theme);
-

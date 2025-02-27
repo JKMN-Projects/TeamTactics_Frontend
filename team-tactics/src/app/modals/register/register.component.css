@@ -1,0 +1,37 @@
+.register-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+mat-card {
+  margin: 0px !important;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: center;  /* Centers the content horizontally */
+  align-items: center;      /* Ensures vertical centering, in case the header has more content */
+}
+
+mat-card-title {
+  text-align: center;  /* Center the text inside the title */
+  margin-bottom: 20px;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;  /* Align items in a column */
+  justify-content: center; /* Center the form content vertically */
+  align-items: center;     /* Center the form content horizontally */
+}
+
+mat-form-field {
+  width: 100%;             /* Ensure form fields take the full width */
+}
+
+.register-actions {
+  margin-top: 20px;        /* Add some spacing between the button and form fields */
+  text-align: center;      /* Ensure the button is centered */
+}

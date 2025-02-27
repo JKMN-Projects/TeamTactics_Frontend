@@ -1,1 +1,12 @@
+<mat-toolbar color="accent">
+  <a routerLink="/" class="logo-button">
+    <img src="assets/logo.png" alt="Home" class="logo">
+  </a>
+  <span class="spacer"></span>
+  <button mat-button *ngIf="!loggedIn" (click)="openRegisterDialog()">Register</button>
+  <button mat-button *ngIf="!loggedIn" (click)="openLoginDialog()">Login</button>
+  <button mat-button *ngIf="loggedIn">Profile</button>
+  <button mat-button *ngIf="loggedIn">Logout</button>
+</mat-toolbar>
+
 <router-outlet />

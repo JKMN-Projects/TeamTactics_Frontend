@@ -1,1 +1,27 @@
-<p>home works!</p>
+<div class="container">
+
+  <mat-grid-list cols="2" rowHeight="400px" gutterSize="16px" color="primary">
+
+    <mat-grid-tile *ngFor="let item of items">
+
+      <mat-card>
+
+        <mat-card-header>
+          Tournament name
+        </mat-card-header>
+
+        <mat-card-content>
+          {{ item }}
+        </mat-card-content>
+
+        <mat-card-footer>
+          <button *ngIf="loggedIn" mat-raised-button color="accent">Create user tournament</button>
+        </mat-card-footer>
+
+      </mat-card>
+
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</div>
