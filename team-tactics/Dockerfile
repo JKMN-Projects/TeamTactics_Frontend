@@ -2,10 +2,10 @@
 FROM node:18.20.4 as build
 
 # Set working directory
-WORKDIR ./
+WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY package*.json
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
@@ -20,7 +20,7 @@ RUN npm run build -- --configuration production
 FROM nginx:alpine
 
 # Copy the build output to replace the default nginx contents
-COPY --from=build /app/dist/*/. /usr/share/nginx/html/
+COPY --from=build /app/dist /usr/share/nginx/html/
 
 # Copy custom Nginx configuration (if you have one)
 # COPY ./nginx.conf /etc/nginx/conf.d/default.conf
