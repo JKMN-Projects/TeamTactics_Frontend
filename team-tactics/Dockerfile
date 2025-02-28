@@ -14,7 +14,7 @@ RUN npm install
 COPY ./team-tactics ./
 
 # Build the application in production mode
-RUN npm run build
+RUN npm run build --configuration=production
 
 # Stage 2: Serve the application using Nginx
 FROM nginx:alpine
