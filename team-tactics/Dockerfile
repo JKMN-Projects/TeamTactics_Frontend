@@ -5,7 +5,7 @@ FROM node:18.20.4 as build
 WORKDIR ./
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY package*.json
 
 # Install dependencies
 RUN npm install
