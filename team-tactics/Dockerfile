@@ -1,32 +1,23 @@
 # Stage 1: Build the Angular application
 FROM node:18-alpine as build
-
-# Set working directory
-WORKDIR /app
-
-# Copy package.json and package-lock.json
-COPY ./team-tactics/package*.json ./
-
-# Install dependencies
+# Create a Virtual directory inside the docker image
+WORKDIR /dist/src/app
+# Copy files to virtual directory
+# COPY package.json package-lock.json ./
+# Run command in Virtual directory
+RUN npm cache clean --force
+# Copy files from local machine to virtual directory in docker image
+COPY . .
 RUN npm install
+RUN npm run build --prod
 
-# Copy the rest of the application
-COPY ./team-tactics ./
-
-# Build the application in production mode
-RUN npm run build --configuration production
-
-# Stage 2: Serve the application using Nginx
-FROM nginx:alpine
-
-# Copy the build output to replace the default nginx contents
-COPY --from=build /app/dist /usr/share/nginx/html/
-
-# Copy custom Nginx configuration (if you have one)
-# COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80
+### STAGE 2:RUN ###
+# Defining nginx image to be used
+FROM nginx:latest AS ngi
+# Copying compiled code and nginx config to different folder
+# NOTE: This path may change according to your project's output folder 
+COPY --from=build /dist/src/app/dist/my-docker-angular-app /usr/share/nginx/html
+COPY /nginx.conf  /etc/nginx/conf.d/default.conf
+# Exposing a port, here it means that inside the container 
+# the app will be using Port 80 while running
 EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
