@@ -11,7 +11,7 @@ COPY ./team-tactics/package*.json ./
 RUN npm install
 
 # Copy the rest of the application
-COPY . .
+COPY ./team-tactics/package*.json ./
 
 # Build the application in production mode
 RUN npm run build --configuration production
