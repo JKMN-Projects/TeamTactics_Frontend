@@ -20,7 +20,7 @@ RUN npm run build --configuration=production
 FROM nginx:alpine
 
 # Copy the build output to replace the default nginx contents
-COPY --from=build /app/dist/team-tactics /usr/share/nginx/html/
+COPY --from=build /app/dist/team-tactics/browser /usr/share/nginx/html/
 
 # Copy custom Nginx configuration (if you have one)
 # COPY ./nginx.conf /etc/nginx/conf.d/default.conf
