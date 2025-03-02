@@ -3,6 +3,42 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.primary-color {
+  color: #458773;
+}
+
+.primary-background-color {
+  background-color: #458773;
+}
+
+.accent-color {
+  color: #23433A;
+}
+
+.accent-background-color {
+  background-color: #23433A;
+}
+
+.warn-color {
+  color: #887634;
+}
+
+.warn-background-color {
+  background-color: #887634;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+.actions {
+  margin-top: 20px;
+  text-align: center;
+}
+
 .row-start-start {
   display: flex;
   flex-direction: row;

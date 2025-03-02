@@ -1,0 +1,29 @@
+<mat-card class="card">
+
+  <mat-card-header>
+
+    <mat-card-title>Assign captain</mat-card-title>
+
+  </mat-card-header>
+
+  <mat-card-content>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Select player</mat-label>
+            <mat-select [formControl]="captain">
+              <mat-option *ngFor="let player of playerList" [value]="player">
+                {{ player.firstName + " " + player.lastName + " (" + player.clubName + ")" }}
+              </mat-option>
+            </mat-select>
+          <mat-error *ngIf="captain.hasError('required')">
+            Must select a player
+          </mat-error>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" [disabled]="captain.invalid" (click)="onSubmit()">Save</button>
+        </div>
+
+  </mat-card-content>
+
+</mat-card>

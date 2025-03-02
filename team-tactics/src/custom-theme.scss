@@ -103,7 +103,7 @@ $team-tactics-warn: mat.define-palette((
 ));
 
 // Create the theme with custom palettes
-$team-tactics-theme: mat.define-light-theme((
+$team-tactics-theme: mat.define-dark-theme((
   color: (
     primary: $team-tactics-primary,
     accent: $team-tactics-accent,
@@ -114,3 +114,4 @@ $team-tactics-theme: mat.define-light-theme((
 ));
 
 @include mat.all-component-themes($team-tactics-theme);
+

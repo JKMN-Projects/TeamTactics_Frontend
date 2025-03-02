@@ -1,0 +1,127 @@
+<div class="container warn-background-color">
+
+  <div class="column accent-background-color">
+
+    <div class="row-space-between-center">
+
+      <button mat-raised-button color="primary" (click)="openAssignCaptain()">Set captain</button>
+
+      <button mat-raised-button color="primary" (click)="lockRoster()">Lock roster</button>
+
+    </div>
+
+    <table mat-table [dataSource]="userRoster" class="mat-elevation-z8 topMargin">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="">Name</th>
+        <td mat-cell *matCellDef="let player">{{ player.firstName }} {{ player.lastName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef>Position</th>
+        <td mat-cell *matCellDef="let player">{{ player.positionName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="club">
+        <th mat-header-cell *matHeaderCellDef>Club</th>
+        <td mat-cell *matCellDef="let player">{{ player.clubName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="captain">
+        <th mat-header-cell *matHeaderCellDef>Captain</th>
+        <td mat-cell *matCellDef="let player">
+          <mat-slide-toggle disabled [checked]="player.captain"></mat-slide-toggle>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+
+  </div>
+
+  <div class="column accent-background-color">
+
+    <div class="formation-container">
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" color="primary">
+        <mat-label>Select formation</mat-label>
+        <mat-select (selectionChange)="onFormationChange($event)">
+          <mat-option *ngFor="let formation of formationKeys" [value]="formation">
+            {{ formation }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="pitch">
+
+        <div class="goal-area-top top-goal"></div>
+        <div class="goal-area-bottom bottom-goal"></div>
+        <div class="penalty-area-top top-penalty"></div>
+        <div class="penalty-area-bottom bottom-penalty"></div>
+
+        <div class="players">
+
+          <div class="attackers">
+            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'" *ngFor="let a of formation.attackers; let i = index;" (click)="openAssignPlayer(a.positionId, a.positionName, i)">
+              <div class="shirt">
+                <div class="collar"></div>
+                <div class="player-info">
+                  <div class="name">{{a.firstName}}</div>
+                  <div class="name">{{a.lastName}}</div>
+                  <div class="name">{{a.id > 0 ? "(" + a.clubShorthand + ")" : a.clubShorthand}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="midfielders">
+            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'" *ngFor="let m of formation.midfielders; let i = index;" (click)="openAssignPlayer(m.positionId, m.positionName, i)">
+              <div class="shirt">
+                <div class="collar"></div>
+                <div class="player-info">
+                  <div class="name">{{m.firstName}}</div>
+                  <div class="name">{{m.lastName}}</div>
+                  <div class="name">{{m.id > 0 ? "(" + m.clubShorthand + ")" : m.clubShorthand}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="defenders">
+            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'" *ngFor="let d of formation.defenders; let i = index;" (click)="openAssignPlayer(d.positionId, d.positionName, i)">
+              <div class="shirt">
+                <div class="collar"></div>
+                <div class="player-info">
+                  <div class="name">{{d.firstName}}</div>
+                  <div class="name">{{d.lastName}}</div>
+                  <div class="name">{{d.id > 0 ? "(" + d.clubShorthand + ")" : d.clubShorthand}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="goalkeeper">
+            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'" (click)="openAssignPlayer(formation.goalkeeper.positionId, formation.goalkeeper.positionName, 0)">
+              <div class="shirt">
+                <div class="collar"></div>
+                <div class="player-info">
+                  <div class="name">{{formation.goalkeeper.firstName}}</div>
+                  <div class="name">{{formation.goalkeeper.lastName}}</div>
+                  <div class="name">{{formation.goalkeeper.id > 0 ? "(" + formation.goalkeeper.clubShorthand + ")" : formation.goalkeeper.clubShorthand}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
