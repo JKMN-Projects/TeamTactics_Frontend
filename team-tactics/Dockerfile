@@ -17,7 +17,7 @@ COPY ./team-tactics ./
 RUN npm run build --configuration=production
 
 # Stage 2: Serve the application using Nginx
-FROM steebchen/nginx-spa
+FROM steebchen/nginx-spa:stable
 
 # Copy the build output to replace the default nginx contents
 COPY --from=build /app/dist/team-tactics/browser /usr/share/nginx/html/
