@@ -6,7 +6,7 @@
 }
 
 .pitch {
-  width: 685px;
+  width: 850px;
   height: 650px;
   background: green;
   border: 2px solid white;
@@ -35,7 +35,7 @@
 
   /* Midfield line */
   &::after {
-    width: 701px;
+    width: 866px;
     height: 0;
     top: 50%;
     left: 0;
@@ -119,12 +119,12 @@
 .goalkeeper, .defenders, .midfielders, .attackers {
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 70px;
 }
 
 .player {
   position: relative;
-  width: 90px;
+  width: 100px;
   height: 100px;
   background: transparent;
   display: flex;
@@ -139,17 +139,17 @@
 
 .shirt {
   position: absolute;
-  width: 90px;
+  width: 100px;
   height: 100px;
-  background-color: lightgray;
-  clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%, 0% 20%);
+  /* background-color: lightgray; */
+  /* clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%, 0% 20%); */
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
 }
 
-.shirt::before, .shirt::after {
+/* .shirt::before, .shirt::after {
   content: "";
   position: absolute;
   width: 20px;
@@ -165,9 +165,9 @@
 
 .shirt::after {
   right: -15px;
-}
+} */
 
-.collar {
+/* .collar {
   position: absolute;
   top: -5px;
   left: 50%;
@@ -176,7 +176,7 @@
   height: 10px;
   background-color: white;
   border-radius: 5px;
-}
+} */
 
 .container {
   width: 98%;
@@ -203,7 +203,8 @@
 
 .name {
   text-align: center;
-  font-size: 12px;
+  text-overflow: ellipsis;
+  font-size: 11px;
   text-shadow: 1px 1px 2px black;
 }
 

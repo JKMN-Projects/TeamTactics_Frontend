@@ -65,55 +65,100 @@
         <div class="players">
 
           <div class="attackers">
-            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'" *ngFor="let a of formation.attackers; let i = index;" (click)="openAssignPlayer(a.positionId, a.positionName, i)">
+
+            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'"
+              *ngFor="let a of formation.attackers; let i = index;"
+              (click)="openAssignPlayer(a.positionId, a.positionName, i)">
+
+              <img src="assets/player.svg">
+
               <div class="shirt">
-                <div class="collar"></div>
+
                 <div class="player-info">
+
                   <div class="name">{{a.firstName}}</div>
                   <div class="name">{{a.lastName}}</div>
                   <div class="name">{{a.id > 0 ? "(" + a.clubShorthand + ")" : a.clubShorthand}}</div>
+
                 </div>
+
               </div>
+
             </div>
+
           </div>
 
           <div class="midfielders">
-            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'" *ngFor="let m of formation.midfielders; let i = index;" (click)="openAssignPlayer(m.positionId, m.positionName, i)">
+
+            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'"
+              *ngFor="let m of formation.midfielders; let i = index;"
+              (click)="openAssignPlayer(m.positionId, m.positionName, i)">
+
+              <img src="assets/player.svg">
+
               <div class="shirt">
-                <div class="collar"></div>
+
                 <div class="player-info">
+
                   <div class="name">{{m.firstName}}</div>
                   <div class="name">{{m.lastName}}</div>
                   <div class="name">{{m.id > 0 ? "(" + m.clubShorthand + ")" : m.clubShorthand}}</div>
+
                 </div>
+
               </div>
+
             </div>
+
           </div>
 
           <div class="defenders">
-            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'" *ngFor="let d of formation.defenders; let i = index;" (click)="openAssignPlayer(d.positionId, d.positionName, i)">
+
+            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'"
+              *ngFor="let d of formation.defenders; let i = index;"
+              (click)="openAssignPlayer(d.positionId, d.positionName, i)">
+
+              <img src="assets/player.svg">
+
               <div class="shirt">
-                <div class="collar"></div>
+
                 <div class="player-info">
+
                   <div class="name">{{d.firstName}}</div>
                   <div class="name">{{d.lastName}}</div>
                   <div class="name">{{d.id > 0 ? "(" + d.clubShorthand + ")" : d.clubShorthand}}</div>
+
                 </div>
+
               </div>
+
             </div>
+
           </div>
 
           <div class="goalkeeper">
-            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'" (click)="openAssignPlayer(formation.goalkeeper.positionId, formation.goalkeeper.positionName, 0)">
+
+            <div [ngClass]="rosterLocked ? 'player disabled' : 'player'"
+              (click)="openAssignPlayer(formation.goalkeeper.positionId, formation.goalkeeper.positionName, 0)">
+
+              <img src="assets/player.svg">
+
               <div class="shirt">
-                <div class="collar"></div>
+
                 <div class="player-info">
+
                   <div class="name">{{formation.goalkeeper.firstName}}</div>
                   <div class="name">{{formation.goalkeeper.lastName}}</div>
-                  <div class="name">{{formation.goalkeeper.id > 0 ? "(" + formation.goalkeeper.clubShorthand + ")" : formation.goalkeeper.clubShorthand}}</div>
+                  <div class="name">{{formation.goalkeeper.id > 0 ? "(" +
+                    formation.goalkeeper.clubShorthand + ")" :
+                    formation.goalkeeper.clubShorthand}}</div>
+
                 </div>
+
               </div>
+
             </div>
+
           </div>
 
         </div>
