@@ -124,7 +124,7 @@ export class TeamFormationComponent {
   }
 
   emptyPlayerObject(positionId: number): Player {
-    return { id: 0, firstName: "Click to", lastName: "choose", captain: false, clubId: 0, clubName: "", clubShorthand: "player", positionId: positionId, positionName: this.getPositionName(positionId) }
+    return { id: 0, firstName: "Click to", lastName: "choose", captain: false, clubId: 0, clubName: "", clubShorthand: this.getPositionName(positionId).toLowerCase(), positionId: positionId, positionName: this.getPositionName(positionId) }
   }
 
   getPositionName(positionId: number) {

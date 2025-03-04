@@ -15,6 +15,10 @@ export class TournamentService {
   private tournamentsSubject$: Subject<Tournament[]> = new BehaviorSubject<Tournament[]>(this.tournaments);
   tournaments$: Observable<Tournament[]> = this.tournamentsSubject$.asObservable();
 
+  private tournament?: Tournament | undefined;
+  private tournamentSubject$: Subject<Tournament | undefined> = new BehaviorSubject<Tournament | undefined>(this.tournament);
+  tournament$: Observable<Tournament | undefined> = this.tournamentSubject$.asObservable();
+
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
   getTournamentList(): void {
@@ -22,6 +26,14 @@ export class TournamentService {
 
     this.httpClient.get<Tournament[]>(this.url + 'getTournamentList', this.httpOptions.getHttpOptions()).subscribe(x => {
       this.tournamentsSubject$.next(x);
+    });
+  }
+
+  getTournament(tournamentId: number): void {
+    this.tournamentSubject$.next(this.tournament);
+
+    this.httpClient.get<Tournament>(this.url + 'getTournament/' + tournamentId.toString(), this.httpOptions.getHttpOptions()).subscribe(x => {
+      this.tournamentSubject$.next(x);
     });
   }
 

@@ -5,6 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Register } from '../../interfaces/register';
+import { RegisterService } from '../../services/register.service';
 
 @Component({
   selector: 'app-register',
@@ -25,19 +27,15 @@ export class RegisterComponent {
   registerForm: FormGroup;
   passwordMismatch: boolean = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private registerService: RegisterService) {
     this.registerForm = this.fb.group({
-      username: ['', Validators.required],
+      username: ['', Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       confirmPassword: ['', [Validators.required, this.passwordMatchValidator.bind(this)]]
     });
   }
 
-  ngOnInit(): void {
-  }
-
-  // Custom validator for password confirmation
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     if (this.registerForm) {
       const password = this.registerForm.get('password')?.value;
@@ -46,14 +44,18 @@ export class RegisterComponent {
         return { passwordMismatch: true };
       }
     }
-    return null;  // return null if the passwords match
+    return null;
   }
 
-  // Handle form submission
   onSubmit(): void {
     if (this.registerForm?.valid) {
-      const { username, email, password } = this.registerForm.value;
-      console.log('Registration successful', { username, email, password });
+      let register = {
+        username: this.registerForm.get("username")?.value,
+        email: this.registerForm.get("email")?.value,
+        password: this.registerForm.get("password")?.value
+      } as Register;
+
+      this.registerService.registerUser(register);
     }
   }
 }

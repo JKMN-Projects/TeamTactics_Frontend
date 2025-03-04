@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Login } from '../interfaces/login';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 import { Token } from '../interfaces/token';
 
 const httpOptions = {
@@ -13,14 +12,13 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthenticationService {
-
   url: string = 'https://xxxx/api/authentication/';
   localUrl: string = 'https://localhost:xxxx/api/authentication/';
 
   private loggedInSubject$: Subject<boolean> = new BehaviorSubject<boolean>(false);
   loggedIn$: Observable<boolean> = this.loggedInSubject$.asObservable();
 
-  constructor(private httpClient: HttpClient, private async: AsyncPipe) { };
+  constructor(private httpClient: HttpClient) { };
 
   getToken(login: Login) {
     this.httpClient.post<Token>(this.url + 'Login', login).subscribe(x => {

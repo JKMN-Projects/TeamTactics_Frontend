@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog'
 import { LoginComponent } from './modals/login/login.component';
 import { RegisterComponent } from './modals/register/register.component';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -22,10 +23,9 @@ import { RegisterComponent } from './modals/register/register.component';
 export class AppComponent {
   title = 'team-tactics';
 
-  loggedIn = false;
+  loggedIn$ = this.authService.loggedIn$;
 
-  constructor(private matDialog: MatDialog) {
-  }
+  constructor(private matDialog: MatDialog, private router: Router, private authService: AuthenticationService) {}
 
   openLoginDialog() {
     this.matDialog.open(LoginComponent)
@@ -33,5 +33,18 @@ export class AppComponent {
 
   openRegisterDialog() {
     this.matDialog.open(RegisterComponent)
+  }
+
+  navigateToCompetitions() {
+    this.router.navigateByUrl("competitions");
+  }
+
+  navigateToProfile() {
+    this.router.navigateByUrl("profile");
+  }
+
+  logout() {
+    this.authService.removeToken();
+    this.router.navigateByUrl("");
   }
 }

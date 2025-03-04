@@ -5,6 +5,7 @@
 .logo-button {
   display: flex;
   align-items: center;
+  margin-right: 10px;
 }
 
 .logo {
@@ -15,6 +16,16 @@
   cursor: pointer;
 }
 
+.marginLeft {
+  margin-left: 10px;
+}
+
 .custom-toolbar {
   background-color: #23433A !important;
+}
+
+.background {
+  padding: 20px;
+  height: calc(100dvh - 64px);
+  /* overflow: hidden !important; */
 }

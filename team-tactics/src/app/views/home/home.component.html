@@ -1,28 +1,15 @@
-<div class="container">
+<mat-card color="accent" class="home-container">
+  <img src="assets/LogoCircle.png" alt="TeamTactics Banner" class="banner-image">
 
-  <mat-grid-list cols="1" rowHeight="400px" gutterSize="16px" color="primary">
+  <mat-card-content>
+    <p class="main-text">
+      Welcome to <strong>TeamTactics</strong>, a free-to-play manager game based on real-world competitions, clubs, and players.
+    </p>
 
-    <mat-grid-tile *ngFor="let item of items">
-
-      <mat-card>
-
-        <mat-card-header>
-          Tournament name
-        </mat-card-header>
-
-        <mat-card-content>
-          {{ item }}
-        </mat-card-content>
-
-        <mat-card-footer>
-          <button *ngIf="loggedIn" mat-raised-button color="accent">Create user tournament</button>
-        </mat-card-footer>
-
-      </mat-card>
-
-    </mat-grid-tile>
-
-
-  </mat-grid-list>
-
-</div>
+    <p class="secondary-text">
+      Register now to create your own tournament and put your strategic skills to the test!
+      Invite your peers to compete, showcase their data analysis expertise, and build a winning team with unique tactics.
+      Who will rise to the top?
+    </p>
+  </mat-card-content>
+</mat-card>

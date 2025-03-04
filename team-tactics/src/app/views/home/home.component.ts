@@ -9,9 +9,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
   standalone: true,
   imports: [
     MatCardModule,
-    MatGridListModule,
-    MatButtonModule,
-    CommonModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

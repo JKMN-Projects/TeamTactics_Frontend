@@ -2,11 +2,16 @@
   <a routerLink="/" class="logo-button">
     <img src="assets/logo.png" alt="Home" class="logo">
   </a>
+  <button mat-button>Competitions</button>
   <span class="spacer"></span>
-  <button mat-button *ngIf="!loggedIn" (click)="openRegisterDialog()">Register</button>
-  <button mat-button *ngIf="!loggedIn" (click)="openLoginDialog()">Login</button>
-  <button mat-button *ngIf="loggedIn">Profile</button>
-  <button mat-button *ngIf="loggedIn">Logout</button>
+  <button mat-button *ngIf="loggedIn$" (click)="openRegisterDialog()">Register</button>
+  <button mat-button *ngIf="loggedIn$" class="marginLeft" (click)="openLoginDialog()">Login</button>
+  <button mat-button *ngIf="!loggedIn$" (click)="navigateToProfile()">Profile</button>
+  <button mat-button *ngIf="!loggedIn$" class="marginLeft" (click)="logout()">Logout</button>
 </mat-toolbar>
 
-<router-outlet />
+<div class="warn-background-color background">
+
+  <router-outlet />
+
+</div>

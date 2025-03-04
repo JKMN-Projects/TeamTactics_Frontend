@@ -5,6 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { AuthenticationService } from '../../services/authentication.service';
+import { Login } from '../../interfaces/login';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +27,7 @@ import { MatInputModule } from '@angular/material/input';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthenticationService, private matDialogRef: MatDialogRef<LoginComponent>) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -33,11 +36,14 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const formData = this.loginForm.value;
-      console.log('Login data: ', formData);
-      // Perform login logic here (e.g., authentication service)
-    } else {
-      console.log('Form is invalid');
+      let login = {
+        email: this.loginForm.get("username")?.value,
+        password: this.loginForm.get("password")?.value
+      } as Login;
+
+      this.authService.getToken(login);
+
+      this.matDialogRef.close();
     }
   }
 }

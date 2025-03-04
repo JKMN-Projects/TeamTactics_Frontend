@@ -1,50 +1,23 @@
-.container {
-  display: flex;
-  justify-content: center;  /* Horizontally center the container */
-  align-items: center;      /* Vertically center the container */
-}
-
-mat-grid-list {
-  width: 100%;
-}
-
-mat-grid-tile {
-  display: flex;
-  justify-content: center;  /* Horizontally center the mat-card */
-  align-items: center;      /* Vertically center the mat-card */
-}
-
-mat-card {
-  display: flex;
-  flex-direction: column;   /* Stack elements vertically */
-  justify-content: space-between;  /* Distribute space evenly */
-  align-items: center;      /* Center items horizontally */
-  width: 100%;
-  max-width: 100%;         /* Set a max width for the card */
+.home-container {
+  max-width: 100%;
   height: 100%;
+  margin: auto;
+  text-align: center;
 }
 
-mat-card-header {
-  text-align: center;       /* Center the text inside the header */
+.banner-image {
+  margin: auto;
+  width: 500px;
+  border-radius: 12px;
 }
 
-mat-card-content,
-mat-card-footer {
-  display: flex;            /* Enable flexbox to center content */
-  justify-content: center;  /* Horizontally center the content */
-  align-items: center;      /* Vertically center the content */
-  width: 100%;              /* Ensure they take full width of the card */
+.main-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 20px;
 }
 
-mat-card-footer {
-  margin-top: 20px;         /* Add spacing between content and footer */
-}
-
-mat-card-footer button {
-  width: auto;              /* Ensure the button adjusts to content */
-}
-
-mat-card-content img {
-  max-width: 100%;          /* Prevent images from overflowing */
-  height: auto;             /* Maintain image aspect ratio */
+.secondary-text {
+  font-size: 1rem;
+  margin-top: 15px;
 }
