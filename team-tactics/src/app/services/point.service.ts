@@ -17,10 +17,10 @@ export class PointService {
 
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
-  getPointList(matchId: number): void {
+  getPointList(): void {
     this.pointsSubject$.next(this.points);
 
-    this.httpClient.get<Points[]>(this.url + 'getPointList/' + matchId, this.httpOptions.getHttpOptions()).subscribe(x => {
+    this.httpClient.get<Points[]>(this.url + 'getPointList', this.httpOptions.getHttpOptions()).subscribe(x => {
       this.pointsSubject$.next(x);
     });
   }
