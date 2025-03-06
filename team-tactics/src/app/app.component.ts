@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog'
 import { LoginComponent } from './modals/login/login.component';
 import { RegisterComponent } from './modals/register/register.component';
 import { AuthenticationService } from './services/authentication.service';
+import { JoinTournamentComponent } from './modals/join-tournament/join-tournament.component';
 
 @Component({
   selector: 'app-root',
@@ -35,12 +36,20 @@ export class AppComponent {
     this.matDialog.open(RegisterComponent)
   }
 
+  openJoinTournamentDialog() {
+    this.matDialog.open(JoinTournamentComponent)
+  }
+
   navigateToHome() {
     this.router.navigateByUrl("");
   }
 
   navigateToCompetitions() {
     this.router.navigateByUrl("competitions");
+  }
+
+  navigateToPointSystem() {
+    this.router.navigateByUrl("point_system");
   }
 
   navigateToProfile() {

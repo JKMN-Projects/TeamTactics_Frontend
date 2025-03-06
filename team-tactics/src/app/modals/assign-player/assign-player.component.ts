@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
+import { TeamPlayer } from '../../interfaces/team-player';
 
 @Component({
   selector: 'app-assign-player',
@@ -30,8 +31,10 @@ export class AssignPlayerComponent {
   unavailablePlayerIds = new Array<number>();
   filteredPlayerList = new Array<Player>();
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: { positionId: number, positionName: string, userRoster: Player[], playerList: Player[] },
+  constructor(@Inject(MAT_DIALOG_DATA) private data: { positionId: number, positionName: string, userRoster: TeamPlayer[], playerList: Player[] },
   private matDialogRef: MatDialogRef<AssignPlayerComponent>) {
+
+
     this.data.userRoster.forEach(player => {
       this.unavailablePlayerIds.push(player.id);
     });
@@ -63,6 +66,8 @@ export class AssignPlayerComponent {
   }
 
   onSubmit() {
+
+
     this.matDialogRef.close(this.player.value)
   }
 }

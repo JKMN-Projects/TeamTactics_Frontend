@@ -11,6 +11,8 @@ import { Formation } from '../../interfaces/formation';
 import { MatButtonModule } from '@angular/material/button';
 import { AssignCaptainComponent } from '../../modals/assign-captain/assign-captain.component';
 import { TeamPlayer } from '../../interfaces/team-player';
+import { CompetitionService } from '../../services/competition.service';
+import { PlayerService } from '../../services/player.service';
 
 @Component({
   selector: 'app-team-formation',
@@ -118,14 +120,18 @@ export class TeamFormationComponent {
   userRosterDefenders = new Array<Player>();
   userRosterGoalkeepers = new Array<Player>();
 
-  constructor(private matDialog: MatDialog) {
+  constructor(private matDialog: MatDialog, private playerService: PlayerService) {
+    this.playerService.players$.subscribe(players => {
+      this.players = players;
+    })
+
     this.generatePlayers();
 
     this.setUserRoster();
   }
 
   emptyPlayerObject(positionId: number): Player {
-    return { id: 0, firstName: "Click to", lastName: "choose",clubId: 0, clubName: "", positionId: positionId, positionName: this.getPositionName(positionId) }
+    return { id: 0, firstName: "Click to", lastName: "choose", clubId: 0, clubName: "", positionId: positionId, positionName: this.getPositionName(positionId) }
   }
 
   getPositionName(positionId: number) {

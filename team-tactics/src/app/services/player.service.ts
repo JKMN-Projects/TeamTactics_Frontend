@@ -10,24 +10,24 @@ import { AssignCaptain } from '../interfaces/assign-captain';
   providedIn: 'root'
 })
 export class PlayerService {
-  url: string = 'https://xxxx/api/player/';
-  localUrl: string = 'https://localhost:xxxx/api/player/';
+  url: string = 'https://teamtactics-backend.ambitiousmoss-465e145e.northeurope.azurecontainerapps.io/api/players/';
+  localUrl: string = 'https://localhost:5432/api/players/';
 
   private players: Array<Player> = [];
-  private usersSubject$: Subject<Player[]> = new BehaviorSubject<Player[]>(this.players);
-  users$: Observable<Player[]> = this.usersSubject$.asObservable();
+  private playersSubject$: Subject<Player[]> = new BehaviorSubject<Player[]>(this.players);
+  players$: Observable<Player[]> = this.playersSubject$.asObservable();
 
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
-  getAllByTournamentId(tournamentId: number): void {
-    this.usersSubject$.next(this.players);
+  getPlayersByCompetitionId(competitionId: number): void {
+    this.playersSubject$.next(this.players);
 
-    this.httpClient.get<Player[]>(this.url + 'getAllByTournamentId/' + tournamentId, this.httpOptions.getHttpOptions()).subscribe(x => {
-      this.usersSubject$.next(x);
+    this.httpClient.get<Player[]>(this.url + 'competitions/' + competitionId, this.httpOptions.getHttpOptions()).subscribe(x => {
+      this.playersSubject$.next(x);
     });
   }
 
-  assignPlayer(request: AssignPlayer): void {
+  assignPlayer(request: AssignPlayer, teamId: number): void {
     this.httpClient.put<any>(this.url + 'assignPlayer', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
       if (x.status < 200 && x.status > 299) {
         alert("Failed to assign player.")

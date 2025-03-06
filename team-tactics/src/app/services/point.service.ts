@@ -8,8 +8,8 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class PointService {
-  url: string = 'https://xxxx/api/points/';
-  localUrl: string = 'https://localhost:xxxx/api/points/';
+  url: string = 'https://teamtactics-backend.ambitiousmoss-465e145e.northeurope.azurecontainerapps.io/api/points/';
+  localUrl: string = 'https://localhost:5432/api/points/';
 
   private points: Array<Point> = [];
   private pointsSubject$: Subject<Point[]> = new BehaviorSubject<Point[]>(this.points);

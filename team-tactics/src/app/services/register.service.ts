@@ -7,8 +7,8 @@ import { Register } from '../interfaces/register';
   providedIn: 'root'
 })
 export class RegisterService {
-  url: string = 'https://xxxx/api/register/';
-  localUrl: string = 'https://localhost:xxxx/api/register/';
+  url: string = 'https://teamtactics-backend.ambitiousmoss-465e145e.northeurope.azurecontainerapps.io/api/register/';
+  localUrl: string = 'https://localhost:5432/api/register/';
 
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 

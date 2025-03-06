@@ -10,6 +10,7 @@ import { UserService } from '../../services/user.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { JwtTokenService } from '../../services/jwt-token.service';
 import { AuthenticationService } from '../../services/authentication.service';
+import { User } from '../../interfaces/user';
 
 @Component({
   selector: 'app-profile',
@@ -29,11 +30,16 @@ export class ProfileComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['tournamentName', 'adminUsername', 'competitionName', 'startDate', 'endDate'];
   dataSource = new MatTableDataSource<Tournament>();
+  user = {} as User;
 
   constructor(private router: Router, private userService: UserService, private tournamentService: TournamentService,
     private jwt: JwtTokenService) {
     this.userService.getUser(Number.parseInt(this.jwt.getUserId()));
     this.tournamentService.getTournamentList();
+
+    this.userService.user$.subscribe(user => {
+      this.user = user;
+    })
 
     this.tournamentService.tournaments$.subscribe(tournament => {
       this.dataSource.data = tournament;

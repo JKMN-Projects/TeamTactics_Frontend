@@ -1,17 +1,17 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './views/home/home.component';
 import { TeamFormationComponent } from './views/team-formation/team-formation.component';
-import { TournamentsComponent } from './views/tournaments/tournaments.component';
 import { CompetitionsComponent } from './views/competitions/competitions.component';
 import { PointSystemComponent } from './views/point-system/point-system.component';
 import { ProfileComponent } from './views/profile/profile.component';
+import { TournamentComponent } from './views/tournament/tournament.component';
 
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'user_team', component: TeamFormationComponent },
   { path: 'point_system', component: PointSystemComponent },
-  { path: 'tournaments', component: TournamentsComponent },
   { path: 'competitions', component: CompetitionsComponent },
+  { path: 'tournament', component: TournamentComponent },
+  { path: 'create_team', component: TeamFormationComponent },
 ];

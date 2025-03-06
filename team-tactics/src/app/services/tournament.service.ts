@@ -3,67 +3,87 @@ import { Tournament } from '../interfaces/tournament';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpOptionsService } from './http-options.service';
 import { HttpClient } from '@angular/common/http';
+import { CreateResponse } from '../interfaces/create-response';
+import { TournamentTeam } from '../interfaces/tournament-team';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TournamentService {
-  url: string = 'https://xxxx/api/tournaments/';
-  localUrl: string = 'https://localhost:xxxx/api/tournaments/';
+  url: string = 'https://teamtactics-backend.ambitiousmoss-465e145e.northeurope.azurecontainerapps.io/api/tournaments/';
+  localUrl: string = 'https://localhost:5432/api/tournaments/';
+
+  private tournament = { id: 0 } as Tournament;
+  private tournamentSubject$: Subject<Tournament> = new BehaviorSubject<Tournament>(this.tournament);
+  tournament$: Observable<Tournament> = this.tournamentSubject$.asObservable();
 
   private tournaments: Array<Tournament> = [];
   private tournamentsSubject$: Subject<Tournament[]> = new BehaviorSubject<Tournament[]>(this.tournaments);
   tournaments$: Observable<Tournament[]> = this.tournamentsSubject$.asObservable();
 
-  private tournament?: Tournament | undefined;
-  private tournamentSubject$: Subject<Tournament | undefined> = new BehaviorSubject<Tournament | undefined>(this.tournament);
-  tournament$: Observable<Tournament | undefined> = this.tournamentSubject$.asObservable();
+  private tournamentTeams: Array<TournamentTeam> = [];
+  private tournamentTeamsSubject$: Subject<TournamentTeam[]> = new BehaviorSubject<TournamentTeam[]>(this.tournamentTeams);
+  tournamentTeams$: Observable<TournamentTeam[]> = this.tournamentTeamsSubject$.asObservable();
 
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
-
-  getTournamentList(): void {
-    this.tournamentsSubject$.next(this.tournaments);
-
-    this.httpClient.get<Tournament[]>(this.url, this.httpOptions.getHttpOptions()).subscribe(x => {
-      this.tournamentsSubject$.next(x);
-    });
-  }
 
   getTournament(tournamentId: number): void {
     this.tournamentSubject$.next(this.tournament);
 
-    this.httpClient.get<Tournament>(this.url + 'getTournament/' + tournamentId.toString(), this.httpOptions.getHttpOptions()).subscribe(x => {
-      this.tournamentSubject$.next(x);
+    this.httpClient.get<Tournament>(this.url + tournamentId.toString(), this.httpOptions.getHttpOptions()).subscribe(response => {
+      this.tournamentSubject$.next(response);
+    });
+  }
+
+  getTournamentList(): void {
+    this.tournamentsSubject$.next(this.tournaments);
+
+    this.httpClient.get<Tournament[]>(this.url, this.httpOptions.getHttpOptions()).subscribe(response => {
+      this.tournamentsSubject$.next(response);
+    });
+  }
+
+  getTournamentTeamList(tournamentId: number): void {
+    this.tournamentSubject$.next(this.tournament);
+
+    this.httpClient.get<TournamentTeam[]>(this.url + tournamentId.toString() + "/teams", this.httpOptions.getHttpOptions()).subscribe(response => {
+      this.tournamentTeamsSubject$.next(response);
     });
   }
 
   joinTournament(tournament: Tournament): void {
-    this.httpClient.post<any>(this.url + 'join', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status < 200 && x.status > 299) {
-        alert("Failed to create tournament.")
+    this.httpClient.post<CreateResponse>(this.url + 'join', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.statusCode == 201) {
+
+      }
+      else {
+        alert("Failed to join tournament.");
       }
     });
   }
 
   createTournament(tournament: Tournament): void {
-    this.httpClient.post<any>(this.url + 'create', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status < 200 && x.status > 299) {
-        alert("Failed to create tournament.")
+    this.httpClient.post<CreateResponse>(this.url + 'create', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.statusCode == 201) {
+        this.getTournament(response.id);
+      }
+      else {
+        alert("Failed to create tournament.");
       }
     });
   }
 
   updateTournament(tournament: Tournament): void {
-    this.httpClient.put<any>(this.url + 'update', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status < 200 && x.status > 299) {
-        alert("Failed to update tournament.")
+    this.httpClient.put<any>(this.url + tournament.id.toString(), tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.status != 201) {
+        alert("Failed to update tournament.");
       }
     });
   }
 
   deleteTournament(tournament: Tournament): void {
-    this.httpClient.put<any>(this.url + 'delete/' + tournament.id.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status < 200 && x.status > 299) {
+    this.httpClient.put<any>(this.url + tournament.id.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.status != 200) {
         alert("Failed to delete tournament.")
       }
     });
