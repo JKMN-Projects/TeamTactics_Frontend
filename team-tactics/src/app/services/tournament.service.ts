@@ -8,8 +8,8 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class TournamentService {
-  url: string = 'https://xxxx/api/tournament/';
-  localUrl: string = 'https://localhost:xxxx/api/tournament/';
+  url: string = 'https://xxxx/api/tournaments/';
+  localUrl: string = 'https://localhost:xxxx/api/tournaments/';
 
   private tournaments: Array<Tournament> = [];
   private tournamentsSubject$: Subject<Tournament[]> = new BehaviorSubject<Tournament[]>(this.tournaments);
@@ -24,7 +24,7 @@ export class TournamentService {
   getTournamentList(): void {
     this.tournamentsSubject$.next(this.tournaments);
 
-    this.httpClient.get<Tournament[]>(this.url + 'getTournamentList', this.httpOptions.getHttpOptions()).subscribe(x => {
+    this.httpClient.get<Tournament[]>(this.url, this.httpOptions.getHttpOptions()).subscribe(x => {
       this.tournamentsSubject$.next(x);
     });
   }
@@ -34,6 +34,14 @@ export class TournamentService {
 
     this.httpClient.get<Tournament>(this.url + 'getTournament/' + tournamentId.toString(), this.httpOptions.getHttpOptions()).subscribe(x => {
       this.tournamentSubject$.next(x);
+    });
+  }
+
+  joinTournament(tournament: Tournament): void {
+    this.httpClient.post<any>(this.url + 'join', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
+      if (x.status < 200 && x.status > 299) {
+        alert("Failed to create tournament.")
+      }
     });
   }
 

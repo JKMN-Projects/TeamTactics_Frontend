@@ -35,6 +35,10 @@ export class AppComponent {
     this.matDialog.open(RegisterComponent)
   }
 
+  navigateToHome() {
+    this.router.navigateByUrl("");
+  }
+
   navigateToCompetitions() {
     this.router.navigateByUrl("competitions");
   }

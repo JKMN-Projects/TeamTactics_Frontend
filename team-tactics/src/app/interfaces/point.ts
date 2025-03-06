@@ -1,5 +1,4 @@
-export interface Points {
-  id: number;
+export interface Point {
   name: string;
   description: string;
   pointAmount: number;

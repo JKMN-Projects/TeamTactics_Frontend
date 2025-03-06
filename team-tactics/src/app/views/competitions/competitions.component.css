@@ -1,0 +1,21 @@
+.columnWidth {
+  width: 30%;
+  gap: 20px;
+}
+
+.competitionLogo {
+  margin: auto;
+  width: 200px;
+}
+
+.centerText {
+  text-align: center;
+}
+
+.fontSize {
+  font-size: 24px;
+}
+
+.removeMargin {
+  margin: 0px;
+}

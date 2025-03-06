@@ -5,10 +5,10 @@
   <mat-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="fill">
-          <mat-label>Username</mat-label>
+          <mat-label>Email or username</mat-label>
           <input matInput formControlName="username" autocomplete="username" required />
           <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
-            Username is required
+            Email or username is required
           </mat-error>
         </mat-form-field>
 

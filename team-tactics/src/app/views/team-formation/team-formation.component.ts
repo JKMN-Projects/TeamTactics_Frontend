@@ -10,6 +10,7 @@ import { Player } from '../../interfaces/player';
 import { Formation } from '../../interfaces/formation';
 import { MatButtonModule } from '@angular/material/button';
 import { AssignCaptainComponent } from '../../modals/assign-captain/assign-captain.component';
+import { TeamPlayer } from '../../interfaces/team-player';
 
 @Component({
   selector: 'app-team-formation',
@@ -30,26 +31,26 @@ export class TeamFormationComponent {
   displayedColumns: string[] = ['name', 'position', 'club', 'captain'];
 
   premierLeagueClubs = [
-    { clubId: 1, clubName: 'Arsenal', clubShorthand: 'ARS' },
-    { clubId: 2, clubName: 'Aston Villa', clubShorthand: 'AVL' },
-    { clubId: 3, clubName: 'Bournemouth', clubShorthand: 'BOU' },
-    { clubId: 4, clubName: 'Brentford', clubShorthand: 'BRE' },
-    { clubId: 5, clubName: 'Brighton', clubShorthand: 'BRI' },
-    { clubId: 6, clubName: 'Chelsea', clubShorthand: 'CHE' },
-    { clubId: 7, clubName: 'Crystal Palace', clubShorthand: 'CRP' },
-    { clubId: 8, clubName: 'Everton', clubShorthand: 'EVE' },
-    { clubId: 9, clubName: 'Fulham', clubShorthand: 'FUL' },
-    { clubId: 10, clubName: 'Ipswich Town', clubShorthand: 'IPS' },
-    { clubId: 11, clubName: 'Leicester City', clubShorthand: 'LEI' },
-    { clubId: 12, clubName: 'Liverpool', clubShorthand: 'LIV' },
-    { clubId: 13, clubName: 'Manchester City	', clubShorthand: 'MAN' },
-    { clubId: 14, clubName: 'Manchester Utd', clubShorthand: 'MUN' },
-    { clubId: 15, clubName: 'Newcastle Utd', clubShorthand: 'NEU' },
-    { clubId: 16, clubName: 'Nottingham Forest', clubShorthand: 'NOF' },
-    { clubId: 17, clubName: 'Southampton', clubShorthand: 'SOU' },
-    { clubId: 18, clubName: 'Tottenham', clubShorthand: 'TOT' },
-    { clubId: 19, clubName: 'West Ham', clubShorthand: 'WHA' },
-    { clubId: 20, clubName: 'Wolverhampton', clubShorthand: 'WOL' },
+    { clubId: 1, clubName: 'Arsenal' },
+    { clubId: 2, clubName: 'Aston Villa' },
+    { clubId: 3, clubName: 'Bournemouth' },
+    { clubId: 4, clubName: 'Brentford' },
+    { clubId: 5, clubName: 'Brighton' },
+    { clubId: 6, clubName: 'Chelsea' },
+    { clubId: 7, clubName: 'Crystal Palace' },
+    { clubId: 8, clubName: 'Everton' },
+    { clubId: 9, clubName: 'Fulham' },
+    { clubId: 10, clubName: 'Ipswich Town' },
+    { clubId: 11, clubName: 'Leicester City' },
+    { clubId: 12, clubName: 'Liverpool' },
+    { clubId: 13, clubName: 'Manchester City' },
+    { clubId: 14, clubName: 'Manchester Utd' },
+    { clubId: 15, clubName: 'Newcastle Utd' },
+    { clubId: 16, clubName: 'Nottingham Forest' },
+    { clubId: 17, clubName: 'Southampton' },
+    { clubId: 18, clubName: 'Tottenham' },
+    { clubId: 19, clubName: 'West Ham' },
+    { clubId: 20, clubName: 'Wolverhampton' },
   ];
 
   playerPositions = [
@@ -111,7 +112,7 @@ export class TeamFormationComponent {
   formation = this.formations[this.selectedFormation];
 
   rosterLocked = false;
-  userRoster = new MatTableDataSource<Player>();
+  userRoster = new MatTableDataSource<TeamPlayer>();
   userRosterAttackers = new Array<Player>();
   userRosterMidfielders = new Array<Player>();
   userRosterDefenders = new Array<Player>();
@@ -124,7 +125,7 @@ export class TeamFormationComponent {
   }
 
   emptyPlayerObject(positionId: number): Player {
-    return { id: 0, firstName: "Click to", lastName: "choose", captain: false, clubId: 0, clubName: "", clubShorthand: this.getPositionName(positionId).toLowerCase(), positionId: positionId, positionName: this.getPositionName(positionId) }
+    return { id: 0, firstName: "Click to", lastName: "choose",clubId: 0, clubName: "", positionId: positionId, positionName: this.getPositionName(positionId) }
   }
 
   getPositionName(positionId: number) {
@@ -157,10 +158,8 @@ export class TeamFormationComponent {
             id: playerId++,
             firstName: `FirstName${playerId}`,
             lastName: `LastName${playerId}`,
-            captain: false,
             clubId: club.clubId,
             clubName: club.clubName,
-            clubShorthand: club.clubShorthand,
             positionId: position.positionId,
             positionName: position.positionName,
           });
@@ -173,38 +172,136 @@ export class TeamFormationComponent {
     this.selectedFormation = event.value;
     this.formation = this.formations[this.selectedFormation];
 
-    let tempRoster = new Array<Player>();
-    tempRoster.push(this.formation.goalkeeper);
+    let tempRoster = new Array<TeamPlayer>();
+
+    let goalkeeper = {
+      id: this.formation.goalkeeper.id,
+      firstName: this.formation.goalkeeper.firstName,
+      lastName: this.formation.goalkeeper.lastName,
+      captain: false,
+      clubId: this.formation.goalkeeper.clubId,
+      clubName: this.formation.goalkeeper.clubName,
+      clubShorthand: "",
+      positionId: this.formation.goalkeeper.positionId,
+      positionName: this.formation.goalkeeper.positionName
+    } as TeamPlayer;
+
+    tempRoster.push(goalkeeper);
 
     this.formation.defenders.forEach(d => {
-      tempRoster.push(d);
+      let tempPlayer = {
+        id: d.id,
+        firstName: d.firstName,
+        lastName: d.lastName,
+        captain: false,
+        clubId: d.clubId,
+        clubName: d.clubName,
+        clubShorthand: "",
+        positionId: d.positionId,
+        positionName: d.positionName
+      } as TeamPlayer;
+
+      tempRoster.push(tempPlayer);
     });
 
     this.formation.midfielders.forEach(m => {
-      tempRoster.push(m);
+      let tempPlayer = {
+        id: m.id,
+        firstName: m.firstName,
+        lastName: m.lastName,
+        captain: false,
+        clubId: m.clubId,
+        clubName: m.clubName,
+        clubShorthand: "",
+        positionId: m.positionId,
+        positionName: m.positionName
+      } as TeamPlayer;
+
+      tempRoster.push(tempPlayer);
     });
 
     this.formation.attackers.forEach(a => {
-      tempRoster.push(a);
+      let tempPlayer = {
+        id: a.id,
+        firstName: a.firstName,
+        lastName: a.lastName,
+        captain: false,
+        clubId: a.clubId,
+        clubName: a.clubName,
+        clubShorthand: "",
+        positionId: a.positionId,
+        positionName: a.positionName
+      } as TeamPlayer;
+
+      tempRoster.push(tempPlayer);
     });
 
     this.userRoster.data = tempRoster;
   }
 
   setUserRoster() {
-    let tempRoster = new Array<Player>();
-    tempRoster.push(this.formation.goalkeeper);
+    let tempRoster = new Array<TeamPlayer>();
+
+    let goalkeeper = {
+      id: this.formation.goalkeeper.id,
+      firstName: this.formation.goalkeeper.firstName,
+      lastName: this.formation.goalkeeper.lastName,
+      captain: false,
+      clubId: this.formation.goalkeeper.clubId,
+      clubName: this.formation.goalkeeper.clubName,
+      clubShorthand: "",
+      positionId: this.formation.goalkeeper.positionId,
+      positionName: this.formation.goalkeeper.positionName
+    } as TeamPlayer;
+
+    tempRoster.push(goalkeeper);
 
     this.formation.defenders.forEach(d => {
-      tempRoster.push(d);
+      let tempPlayer = {
+        id: d.id,
+        firstName: d.firstName,
+        lastName: d.lastName,
+        captain: false,
+        clubId: d.clubId,
+        clubName: d.clubName,
+        clubShorthand: "",
+        positionId: d.positionId,
+        positionName: d.positionName
+      } as TeamPlayer;
+
+      tempRoster.push(tempPlayer);
     });
 
     this.formation.midfielders.forEach(m => {
-      tempRoster.push(m);
+      let tempPlayer = {
+        id: m.id,
+        firstName: m.firstName,
+        lastName: m.lastName,
+        captain: false,
+        clubId: m.clubId,
+        clubName: m.clubName,
+        clubShorthand: "",
+        positionId: m.positionId,
+        positionName: m.positionName
+      } as TeamPlayer;
+
+      tempRoster.push(tempPlayer);
     });
 
     this.formation.attackers.forEach(a => {
-      tempRoster.push(a);
+      let tempPlayer = {
+        id: a.id,
+        firstName: a.firstName,
+        lastName: a.lastName,
+        captain: false,
+        clubId: a.clubId,
+        clubName: a.clubName,
+        clubShorthand: "",
+        positionId: a.positionId,
+        positionName: a.positionName
+      } as TeamPlayer;
+
+      tempRoster.push(tempPlayer);
     });
 
     this.userRoster.data = tempRoster;

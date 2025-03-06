@@ -1,4 +1,4 @@
-export interface MatchPoints {
+export interface PointMatch {
   playerName: string;
   pointCategoryName: string;
   occurrences: number;

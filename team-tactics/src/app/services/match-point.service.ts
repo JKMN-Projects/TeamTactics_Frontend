@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatchPoints } from '../interfaces/match-points';
+import { MatchPoints } from '../interfaces/point-match';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpOptionsService } from './http-options.service';
 import { HttpClient } from '@angular/common/http';

@@ -12,8 +12,8 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthenticationService {
-  url: string = 'https://xxxx/api/authentication/';
-  localUrl: string = 'https://localhost:xxxx/api/authentication/';
+  url: string = 'https://teamtactics-backend.ambitiousmoss-465e145e.northeurope.azurecontainerapps.io/api/authentication/';
+  localUrl: string = 'https://localhost:5432/api/authentication/';
 
   private loggedInSubject$: Subject<boolean> = new BehaviorSubject<boolean>(false);
   loggedIn$: Observable<boolean> = this.loggedInSubject$.asObservable();
@@ -21,7 +21,7 @@ export class AuthenticationService {
   constructor(private httpClient: HttpClient) { };
 
   getToken(login: Login) {
-    this.httpClient.post<Token>(this.url + 'Login', login).subscribe(x => {
+    this.httpClient.post<Token>(this.url + 'login', login).subscribe(x => {
       this.checkResponse(x);
     });
   };
@@ -37,8 +37,13 @@ export class AuthenticationService {
   };
 
   register(login: Login) {
-    this.httpClient.post<Token>(this.url + 'register', login).subscribe(x => {
-      this.checkResponse(x);
+    this.httpClient.post<any>(this.url + 'register', login).subscribe(x => {
+      if (x.status == 200) {
+        alert("User was registered succesfully.");
+      }
+      else {
+        alert("Failed to register user.")
+      }
     });
   };
 

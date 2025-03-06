@@ -1,1 +1,31 @@
-<p>competitions works!</p>
+<div class="flex-wrapper">
+
+  <div class="column fullWidth accent-background-color">
+
+    <div class="row-space-between-center" *ngFor="let comp of competitions">
+
+      <div class="column columnWidth">
+
+        <img src="assets/premier-league.png" class="competitionLogo">
+
+      </div>
+
+      <div class="column columnWidth centerText">
+
+        <p class="removeMargin">Starts from: {{comp.startDate}}</p>
+
+        <p class="removeMargin">Ends at: {{comp.endDate}}</p>
+
+      </div>
+
+      <div class="column columnWidth">
+
+        <button mat-raised-button color="primary" [disabled]="loggedIn$" [matTooltip]="!loggedIn$ ? '' : 'Login to create tournament'">Create user tournament</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

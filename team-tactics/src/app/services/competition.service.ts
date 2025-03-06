@@ -8,8 +8,8 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CompetitionService {
-  url: string = 'https://xxxx/api/competition/';
-  localUrl: string = 'https://localhost:xxxx/api/competition/';
+  url: string = 'https://teamtactics-backend.ambitiousmoss-465e145e.northeurope.azurecontainerapps.io/api/competitions';
+  localUrl: string = 'https://localhost:5432/api/competitions';
 
   private competitions: Array<Competition> = [];
   private competitionsSubject$: Subject<Competition[]> = new BehaviorSubject<Competition[]>(this.competitions);
@@ -20,7 +20,7 @@ export class CompetitionService {
   getCompetitionList(): void {
     this.competitionsSubject$.next(this.competitions);
 
-    this.httpClient.get<Competition[]>(this.url + 'getCompetitionList', this.httpOptions.getHttpOptions()).subscribe(x => {
+    this.httpClient.get<Competition[]>(this.url).subscribe(x => {
       this.competitionsSubject$.next(x);
     });
   }

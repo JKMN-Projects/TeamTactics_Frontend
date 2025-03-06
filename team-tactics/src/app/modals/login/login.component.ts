@@ -37,7 +37,7 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       let login = {
-        email: this.loginForm.get("username")?.value,
+        emailOrUsername: this.loginForm.get("username")?.value,
         password: this.loginForm.get("password")?.value
       } as Login;
 

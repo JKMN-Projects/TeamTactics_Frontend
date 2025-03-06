@@ -1,4 +1,4 @@
-export interface Match {
+export interface TournamentMatch {
   id: number;
   homeClubScore: number;
   awayClubScore: number;

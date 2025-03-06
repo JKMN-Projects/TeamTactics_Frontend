@@ -8,20 +8,26 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService {
-  url: string = 'https://xxxx/api/user/';
-  localUrl: string = 'https://localhost:xxxx/api/user/';
+  url: string = 'https://xxxx/api/users/';
+  localUrl: string = 'https://localhost:xxxx/api/users/';
 
   private user: Array<User> = [];
   private userSubject$: Subject<User[]> = new BehaviorSubject<User[]>(this.user);
   user$: Observable<User[]> = this.userSubject$.asObservable();
+
+
 
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
   getUser(userId: number): void {
     this.userSubject$.next(this.user);
 
-    this.httpClient.get<User[]>(this.url + 'getUser', this.httpOptions.getHttpOptions()).subscribe(x => {
+    this.httpClient.get<User[]>(this.url + userId.toString(), this.httpOptions.getHttpOptions()).subscribe(x => {
       this.userSubject$.next(x);
     });
+  }
+
+  getUserTournamentTeam(userId: number) {
+
   }
 }

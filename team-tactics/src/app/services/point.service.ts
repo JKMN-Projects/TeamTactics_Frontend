@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Points } from '../interfaces/points';
+import { Point } from '../interfaces/point';
 import { HttpOptionsService } from './http-options.service';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -11,16 +11,16 @@ export class PointService {
   url: string = 'https://xxxx/api/points/';
   localUrl: string = 'https://localhost:xxxx/api/points/';
 
-  private points: Array<Points> = [];
-  private pointsSubject$: Subject<Points[]> = new BehaviorSubject<Points[]>(this.points);
-  points$: Observable<Points[]> = this.pointsSubject$.asObservable();
+  private points: Array<Point> = [];
+  private pointsSubject$: Subject<Point[]> = new BehaviorSubject<Point[]>(this.points);
+  points$: Observable<Point[]> = this.pointsSubject$.asObservable();
 
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
   getPointList(): void {
     this.pointsSubject$.next(this.points);
 
-    this.httpClient.get<Points[]>(this.url + 'getPointList', this.httpOptions.getHttpOptions()).subscribe(x => {
+    this.httpClient.get<Point[]>(this.url).subscribe(x => {
       this.pointsSubject$.next(x);
     });
   }

@@ -3,8 +3,8 @@ export interface Tournament {
   name: string;
   description: string;
   inviteCode?: string;
-  userId: number;
-  adminUsername: string;
+  ownerUserId: number;
+  ownerUsername: string;
   competitionId: number;
   competitionName: string;
 }
