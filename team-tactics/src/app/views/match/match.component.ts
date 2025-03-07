@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { PointMatch } from '../../interfaces/point-match';
 import { PointService } from '../../services/point.service';
@@ -16,7 +16,9 @@ import { PointService } from '../../services/point.service';
   templateUrl: './match.component.html',
   styleUrl: './match.component.css'
 })
-export class MatchComponent {
+export class MatchComponent implements AfterViewInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   displayedColumns = ["playerName", "clubName", "pointCategoryName", "occurrences", "totalPoints"];
 
   matchPoints = new MatTableDataSource<PointMatch>();
@@ -25,5 +27,9 @@ export class MatchComponent {
     this.pointService.matchPoints$.subscribe(matchPoints => {
       this.matchPoints.data = matchPoints;
     })
+  }
+
+  ngAfterViewInit(): void {
+    this.matchPoints.paginator = this.paginator;
   }
 }

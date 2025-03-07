@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TournamentMatch } from '../../interfaces/tournament-match';
 import { CommonModule } from '@angular/common';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { TournamentService } from '../../services/tournament.service';
 import { PointService } from '../../services/point.service';
@@ -18,7 +18,9 @@ import { PointService } from '../../services/point.service';
   templateUrl: './matches.component.html',
   styleUrl: './matches.component.css'
 })
-export class MatchesComponent {
+export class MatchesComponent implements AfterViewInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   displayedColumns = ["homeTeam", "score", "awayTeam", "timestamp"]
 
   tournamentMatch = new MatTableDataSource<TournamentMatch>();
@@ -27,6 +29,10 @@ export class MatchesComponent {
     this.tournamentService.tournamentMatches$.subscribe(matches => {
       this.tournamentMatch.data = matches;
     })
+  }
+
+  ngAfterViewInit(): void {
+    this.tournamentMatch.paginator = this.paginator;
   }
 
   navigateToMatchPoints(tournamentMatch: TournamentMatch) {
