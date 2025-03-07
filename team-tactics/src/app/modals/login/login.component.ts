@@ -37,8 +37,8 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       let login = {
-        emailOrUsername: this.loginForm.get("username")?.value,
-        password: this.loginForm.get("password")?.value
+        Email: this.loginForm.get("username")?.value,
+        Password: this.loginForm.get("password")?.value
       } as Login;
 
       this.authService.getToken(login);

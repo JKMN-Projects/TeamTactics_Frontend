@@ -7,6 +7,7 @@ import { CreateResponse } from '../interfaces/create-response';
 import { TournamentTeam } from '../interfaces/tournament-team';
 import { CreateTournament } from '../interfaces/create-tournament';
 import { JoinTournament } from '../interfaces/join-tournament';
+import { TournamentMatch } from '../interfaces/tournament-match';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class TournamentService {
   private tournamentTeamsSubject$: Subject<TournamentTeam[]> = new BehaviorSubject<TournamentTeam[]>(this.tournamentTeams);
   tournamentTeams$: Observable<TournamentTeam[]> = this.tournamentTeamsSubject$.asObservable();
 
+  private tournamentMatches: Array<TournamentMatch> = [];
+  private tournamentMatchesSubject$: Subject<TournamentMatch[]> = new BehaviorSubject<TournamentMatch[]>(this.tournamentMatches);
+  tournamentMatches$: Observable<TournamentMatch[]> = this.tournamentMatchesSubject$.asObservable();
+
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
   getTournament(tournamentId: number): void {
@@ -46,10 +51,18 @@ export class TournamentService {
   }
 
   getTournamentTeamList(tournamentId: number): void {
-    this.tournamentSubject$.next(this.tournament);
+    this.tournamentTeamsSubject$.next(this.tournamentTeams);
 
     this.httpClient.get<TournamentTeam[]>(this.url + tournamentId.toString() + "/teams", this.httpOptions.getHttpOptions()).subscribe(response => {
       this.tournamentTeamsSubject$.next(response);
+    });
+  }
+
+  getTournamentMatchList(tournamentId: number): void {
+    this.tournamentMatchesSubject$.next(this.tournamentMatches);
+
+    this.httpClient.get<TournamentMatch[]>(this.url + tournamentId.toString() + "/matches", this.httpOptions.getHttpOptions()).subscribe(response => {
+      this.tournamentMatchesSubject$.next(response);
     });
   }
 

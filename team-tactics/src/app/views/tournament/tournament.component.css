@@ -16,9 +16,17 @@ p {
 }
 
 .width20P {
-  width: 15%;
+  width: 20%;
 }
 
 .width60P {
-  width: 70%;
+  width: 60%;
+}
+
+.tableHeight {
+  height: 80%;
+}
+
+.topMargin {
+  margin-top: 10px;
 }

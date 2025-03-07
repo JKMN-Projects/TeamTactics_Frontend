@@ -15,6 +15,8 @@ import { Bulletin } from '../../interfaces/bulletin';
 import { ColumnWidthDirective } from '../../directives/column-width.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateBulletinComponent } from '../../modals/create-bulletin/create-bulletin.component';
+import { Router } from '@angular/router';
+import { PointService } from '../../services/point.service';
 
 @Component({
   selector: 'app-tournament',
@@ -36,8 +38,6 @@ import { CreateBulletinComponent } from '../../modals/create-bulletin/create-bul
 export class TournamentComponent implements AfterViewInit {
   @ViewChildren(MatPaginator) paginators!: QueryList<MatPaginator>;
 
-  newPostControl = new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(500)]);
-
   standingColumns: string[] = ['nr', 'teamName', 'totalPoints'];
   bulletinColumns: string[] = ['username', 'text', 'timestamp'];
 
@@ -55,32 +55,33 @@ export class TournamentComponent implements AfterViewInit {
   tournamentTeams = new MatTableDataSource<TournamentTeam>();
   bulletins = new MatTableDataSource<Bulletin>();
 
-  constructor(private tournamentService: TournamentService, private jwtService: JwtTokenService, private matDialog: MatDialog) {
-    let temp = new Array<Bulletin>();
-    for (let index = 0; index < 10; index++) {
-      temp.push({ username: "Tester", text: index.toString() + " Lorem ipsum", createdTime: "06-03-2025 22:33" } as Bulletin)
-    }
+  constructor(private tournamentService: TournamentService, private jwtService: JwtTokenService, private matDialog: MatDialog,
+    private router: Router, private pointService: PointService) {
+    // let temp = new Array<Bulletin>();
+    // for (let index = 0; index < 10; index++) {
+    //   temp.push({ username: "Tester", text: index.toString() + " Lorem ipsum", createdTime: "06-03-2025 22:33" } as Bulletin)
+    // }
 
-    this.bulletins.data = temp;
+    // this.bulletins.data = temp;
 
-    const tempTeams: TournamentTeam[] = [
-      { teamId: 7, teamName: "Golden Phoenix", totalPoints: 53 },
-      { teamId: 3, teamName: "Shadow Warriors", totalPoints: 50 },
-      { teamId: 9, teamName: "Venomous Cobras", totalPoints: 48 },
-      { teamId: 5, teamName: "Crimson Vipers", totalPoints: 47 },
-      { teamId: 1, teamName: "Thunder Strikers", totalPoints: 45 },
-      { teamId: 10, teamName: "Steel Guardians", totalPoints: 44 },
-      { teamId: 4, teamName: "Blazing Eagles", totalPoints: 42 },
-      { teamId: 8, teamName: "Frost Wolves", totalPoints: 40 },
-      { teamId: 2, teamName: "Iron Titans", totalPoints: 38 },
-      { teamId: 6, teamName: "Storm Breakers", totalPoints: 36 }
-    ];
+    // const tempTeams: TournamentTeam[] = [
+    //   { teamId: 7, teamName: "Golden Phoenix", totalPoints: 53 },
+    //   { teamId: 3, teamName: "Shadow Warriors", totalPoints: 50 },
+    //   { teamId: 9, teamName: "Venomous Cobras", totalPoints: 48 },
+    //   { teamId: 5, teamName: "Crimson Vipers", totalPoints: 47 },
+    //   { teamId: 1, teamName: "Thunder Strikers", totalPoints: 45 },
+    //   { teamId: 10, teamName: "Steel Guardians", totalPoints: 44 },
+    //   { teamId: 4, teamName: "Blazing Eagles", totalPoints: 42 },
+    //   { teamId: 8, teamName: "Frost Wolves", totalPoints: 40 },
+    //   { teamId: 2, teamName: "Iron Titans", totalPoints: 38 },
+    //   { teamId: 6, teamName: "Storm Breakers", totalPoints: 36 }
+    // ];
 
-    this.tournamentTeams.data = tempTeams;
+    // this.tournamentTeams.data = tempTeams;
 
-    // this.tournamentService.tournament$.subscribe(tournament => {
-    //   this.tournament = tournament;
-    // })
+    this.tournamentService.tournament$.subscribe(tournament => {
+      this.tournament = tournament;
+    })
 
     // Subscribe to bulletin observable
   }
@@ -90,14 +91,27 @@ export class TournamentComponent implements AfterViewInit {
     this.bulletins.paginator = this.paginators.toArray()[1];
   }
 
+  getIndex(tournamentTeam: TournamentTeam) {
+    return this.tournamentTeams.data.findIndex(team => team.teamId == tournamentTeam.teamId) + 1;
+  }
+
   checkOwner(): boolean {
-    return true;
     if (Number.parseInt(this.jwtService.getUserId()) == this.tournament.ownerUserId) {
       return true;
     }
     else {
       return false;
     }
+  }
+
+  navigateToMatches() {
+    this.tournamentService.getTournamentMatchList(this.tournament.id);
+    this.router.navigateByUrl("matches");
+  }
+
+  navigateToTeamPoints(team: TournamentTeam) {
+    this.pointService.getTeamPoints(team.teamId);
+    this.router.navigateByUrl("team");
   }
 
   openCreateBulletin() {
@@ -107,19 +121,5 @@ export class TournamentComponent implements AfterViewInit {
         userId: Number.parseInt(this.jwtService.getUserId())
       }
     })
-  }
-
-  addPost(message: string) {
-    // let post = { text: message, createdTime: Date.now().toString(), userId: Number.parseInt(this.jwtService.getUserId()), tournamentId: this.tournament.id } as Bulletin;
-
-    // Call service
-  }
-
-  editPost(post: Bulletin) {
-    // Call service
-  }
-
-  deletePost(postId: number) {
-    // Call service
   }
 }
