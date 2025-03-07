@@ -13,6 +13,8 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatButtonModule } from '@angular/material/button';
 import { Bulletin } from '../../interfaces/bulletin';
 import { ColumnWidthDirective } from '../../directives/column-width.directive';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateBulletinComponent } from '../../modals/create-bulletin/create-bulletin.component';
 
 @Component({
   selector: 'app-tournament',
@@ -53,7 +55,7 @@ export class TournamentComponent implements AfterViewInit {
   tournamentTeams = new MatTableDataSource<TournamentTeam>();
   bulletins = new MatTableDataSource<Bulletin>();
 
-  constructor(private tournamentService: TournamentService, private jwtService: JwtTokenService) {
+  constructor(private tournamentService: TournamentService, private jwtService: JwtTokenService, private matDialog: MatDialog) {
     let temp = new Array<Bulletin>();
     for (let index = 0; index < 10; index++) {
       temp.push({ username: "Tester", text: index.toString() + " Lorem ipsum", createdTime: "06-03-2025 22:33" } as Bulletin)
@@ -96,6 +98,15 @@ export class TournamentComponent implements AfterViewInit {
     else {
       return false;
     }
+  }
+
+  openCreateBulletin() {
+    this.matDialog.open(CreateBulletinComponent, {
+      data: {
+        tournamentId: this.tournament.id,
+        userId: Number.parseInt(this.jwtService.getUserId())
+      }
+    })
   }
 
   addPost(message: string) {

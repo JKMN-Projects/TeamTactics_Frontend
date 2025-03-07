@@ -1,1 +1,41 @@
-<p>join-tournament works!</p>
+<mat-card class="card">
+
+  <mat-card-header>
+    <mat-card-title>Join tournament</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+
+      <form [formGroup]="tournamentForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="fill">
+          <mat-label>Invite code</mat-label>
+          <input matInput formControlName="inviteCode"/>
+          <mat-error *ngIf="tournamentForm.get('inviteCode')?.hasError('minlength')">
+            Must be exactly 6 characters
+          </mat-error>
+          <mat-error *ngIf="tournamentForm.get('inviteCode')?.hasError('maxlength')">
+            Must be exactly 6 characters
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Team name</mat-label>
+          <input matInput formControlName="teamName"/>
+          <mat-error *ngIf="tournamentForm.get('teamName')?.hasError('minlength')">
+            Must have a minimum length of 3 characters
+          </mat-error>
+          <mat-error *ngIf="tournamentForm.get('teamName')?.hasError('maxlength')">
+            Must not exceed 50 characters
+          </mat-error>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="tournamentForm.invalid">Login</button>
+        </div>
+
+      </form>
+
+  </mat-card-content>
+
+</mat-card>

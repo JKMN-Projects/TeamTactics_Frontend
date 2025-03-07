@@ -7,7 +7,7 @@
   <span class="spacer"></span>
   <button mat-button *ngIf="loggedIn$" (click)="openRegisterDialog()">Register</button>
   <button mat-button *ngIf="loggedIn$" class="marginLeft" (click)="openLoginDialog()">Login</button>
-  <button mat-button *ngIf="!loggedIn$" (click)="navigateToProfile()">Join tournament</button>
+  <button mat-button *ngIf="!loggedIn$" (click)="openJoinTournamentDialog()">Join tournament</button>
   <button mat-button *ngIf="!loggedIn$" (click)="navigateToProfile()">Profile</button>
   <button mat-button *ngIf="!loggedIn$" class="marginLeft" (click)="logout()">Logout</button>
 </mat-toolbar>

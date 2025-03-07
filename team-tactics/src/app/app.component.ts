@@ -8,6 +8,7 @@ import { LoginComponent } from './modals/login/login.component';
 import { RegisterComponent } from './modals/register/register.component';
 import { AuthenticationService } from './services/authentication.service';
 import { JoinTournamentComponent } from './modals/join-tournament/join-tournament.component';
+import { JwtTokenService } from './services/jwt-token.service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,7 @@ export class AppComponent {
 
   loggedIn$ = this.authService.loggedIn$;
 
-  constructor(private matDialog: MatDialog, private router: Router, private authService: AuthenticationService) {}
+  constructor(private matDialog: MatDialog, private router: Router, private authService: AuthenticationService, private jwt: JwtTokenService) {}
 
   openLoginDialog() {
     this.matDialog.open(LoginComponent)
@@ -37,7 +38,13 @@ export class AppComponent {
   }
 
   openJoinTournamentDialog() {
-    this.matDialog.open(JoinTournamentComponent)
+    this.matDialog.open(JoinTournamentComponent, {
+      data: Number.parseInt(this.jwt.getUserId())
+    }).afterClosed().subscribe(x => {
+      if (x) {
+        this.router.navigateByUrl("tournament");
+      }
+    })
   }
 
   navigateToHome() {

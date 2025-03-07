@@ -1,0 +1,24 @@
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title>Bulletin</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <mat-form-field appearance="outline" class="fullWidth">
+      <mat-label>New post</mat-label>
+      <textarea matInput [formControl]="bulletin" placeholder="Write something..."></textarea>
+      <mat-error *ngIf="bulletin.hasError('minlength')">
+        Must have a minimum length of 2 characters
+      </mat-error>
+      <mat-error *ngIf="bulletin.hasError('maxlength')">
+        Must not exceed 500 characters
+      </mat-error>
+    </mat-form-field>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="bulletin.invalid" (click)="onSubmit()">Post</button>
+      </div>
+
+  </mat-card-content>
+</mat-card>
