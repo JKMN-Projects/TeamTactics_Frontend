@@ -7,6 +7,7 @@ import { ProfileComponent } from './views/profile/profile.component';
 import { TournamentComponent } from './views/tournament/tournament.component';
 import { TeamPointsComponent } from './views/team-points/team-points.component';
 import { MatchesComponent } from './views/matches/matches.component';
+import { MatchComponent } from './views/match/match.component';
 
 
 export const routes: Routes = [
@@ -18,5 +19,5 @@ export const routes: Routes = [
   { path: 'create_team', component: TeamFormationComponent },
   { path: 'team', component: TeamPointsComponent },
   { path: 'matches', component: MatchesComponent },
-  { path: 'match', component: Team },
+  { path: 'match', component: MatchComponent },
 ];
