@@ -15,6 +15,7 @@ export class AuthenticationService {
   url: string = 'https://teamtactics-backend.ambitiousmoss-465e145e.northeurope.azurecontainerapps.io/api/authentication/';
   localUrl: string = 'https://localhost:5432/api/authentication/';
 
+  private loggedIn = false;
   private loggedInSubject$: Subject<boolean> = new BehaviorSubject<boolean>(false);
   loggedIn$: Observable<boolean> = this.loggedInSubject$.asObservable();
 
@@ -34,7 +35,8 @@ export class AuthenticationService {
   removeToken() {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
-    this.loggedInSubject$.next(false);
+      this.loggedIn = false;
+      this.loggedInSubject$.next(false);
   };
 
   register(login: Login) {
@@ -53,7 +55,12 @@ export class AuthenticationService {
       sessionStorage.setItem("accessToken", x.accessToken);
       sessionStorage.setItem("refreshToken", x.refreshToken);
 
+      this.loggedIn = true;
       this.loggedInSubject$.next(true);
     };
   };
+
+  isAuthenticated(): boolean {
+    return this.loggedIn;
+  }
 }

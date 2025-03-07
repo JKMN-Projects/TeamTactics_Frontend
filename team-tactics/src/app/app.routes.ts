@@ -8,16 +8,17 @@ import { TournamentComponent } from './views/tournament/tournament.component';
 import { TeamPointsComponent } from './views/team-points/team-points.component';
 import { MatchesComponent } from './views/matches/matches.component';
 import { MatchComponent } from './views/match/match.component';
+import { authGuard } from './utility/auth.guard';
 
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'profile', component: ProfileComponent },
   { path: 'point_system', component: PointSystemComponent },
   { path: 'competitions', component: CompetitionsComponent },
-  { path: 'tournament', component: TournamentComponent },
-  { path: 'create_team', component: TeamFormationComponent },
-  { path: 'team', component: TeamPointsComponent },
-  { path: 'matches', component: MatchesComponent },
-  { path: 'match', component: MatchComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  { path: 'tournament', component: TournamentComponent, canActivate: [authGuard] },
+  { path: 'create_team', component: TeamFormationComponent, canActivate: [authGuard] },
+  { path: 'team', component: TeamPointsComponent, canActivate: [authGuard] },
+  { path: 'matches', component: MatchesComponent, canActivate: [authGuard] },
+  { path: 'match', component: MatchComponent, canActivate: [authGuard] },
 ];
