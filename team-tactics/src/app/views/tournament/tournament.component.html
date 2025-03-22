@@ -80,7 +80,7 @@
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="standingColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: standingColumns;"></tr>
+              <tr mat-row *matRowDef="let row; columns: standingColumns;" (click)="navigateToTeamPoints(row)"></tr>
 
             </table>
 

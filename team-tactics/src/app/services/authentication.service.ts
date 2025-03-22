@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Login } from '../interfaces/login';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Token } from '../interfaces/token';
+import { JwtTokenService } from './jwt-token.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,7 +20,7 @@ export class AuthenticationService {
   private loggedInSubject$: Subject<boolean> = new BehaviorSubject<boolean>(false);
   loggedIn$: Observable<boolean> = this.loggedInSubject$.asObservable();
 
-  constructor(private httpClient: HttpClient) { };
+  constructor(private httpClient: HttpClient, private jwt: JwtTokenService) { };
 
   getToken(login: Login) {
     this.httpClient.post<Token>(this.url + 'login', login).subscribe(x => {
@@ -54,6 +55,7 @@ export class AuthenticationService {
     if (x.token.length > 0) {
       if (x.tokenType == "JWT") {
         sessionStorage.setItem("accessToken", x.token);
+        sessionStorage.setItem("tokenCreationTime", Date.now().valueOf().toString());
       }
       else {
         sessionStorage.setItem("refreshToken", x.token);
@@ -66,5 +68,14 @@ export class AuthenticationService {
 
   isAuthenticated(): boolean {
     return this.loggedIn;
+  }
+
+  checkLoginState(): boolean {
+    if (this.jwt.getJwtClaim().expiry < Date.now().valueOf()) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 }

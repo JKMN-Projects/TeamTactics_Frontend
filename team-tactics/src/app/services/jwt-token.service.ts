@@ -14,12 +14,11 @@ export class JwtTokenService {
   getJwtClaim(): JwtClaim {
     let jsonObject = JSON.parse(atob(sessionStorage.getItem("accessToken")!.split('.')[1]));
 
-    console.log(jsonObject);
-
     return {
       nameId: Number.parseInt(jsonObject.nameid),
       email: jsonObject.email,
-      unique_name: jsonObject.unique_name
+      unique_name: jsonObject.unique_name,
+      expiry: Number.parseInt(jsonObject.exp)
     } as JwtClaim;
   }
 }

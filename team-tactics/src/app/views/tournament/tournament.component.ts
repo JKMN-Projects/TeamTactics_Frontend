@@ -58,28 +58,6 @@ export class TournamentComponent implements AfterViewInit {
 
   constructor(private tournamentService: TournamentService, private jwtService: JwtTokenService, private matDialog: MatDialog,
     private router: Router, private pointService: PointService, private bulletinService: BulletinService) {
-    // let temp = new Array<Bulletin>();
-    // for (let index = 0; index < 10; index++) {
-    //   temp.push({ username: "Tester", text: index.toString() + " Lorem ipsum", createdTime: "06-03-2025 22:33" } as Bulletin)
-    // }
-
-    // this.bulletins.data = temp;
-
-    // const tempTeams: TournamentTeam[] = [
-    //   { teamId: 7, teamName: "Golden Phoenix", totalPoints: 53 },
-    //   { teamId: 3, teamName: "Shadow Warriors", totalPoints: 50 },
-    //   { teamId: 9, teamName: "Venomous Cobras", totalPoints: 48 },
-    //   { teamId: 5, teamName: "Crimson Vipers", totalPoints: 47 },
-    //   { teamId: 1, teamName: "Thunder Strikers", totalPoints: 45 },
-    //   { teamId: 10, teamName: "Steel Guardians", totalPoints: 44 },
-    //   { teamId: 4, teamName: "Blazing Eagles", totalPoints: 42 },
-    //   { teamId: 8, teamName: "Frost Wolves", totalPoints: 40 },
-    //   { teamId: 2, teamName: "Iron Titans", totalPoints: 38 },
-    //   { teamId: 6, teamName: "Storm Breakers", totalPoints: 36 }
-    // ];
-
-    // this.tournamentTeams.data = tempTeams;
-
     this.tournamentService.tournament$.subscribe(tournament => {
       this.tournament = tournament;
 

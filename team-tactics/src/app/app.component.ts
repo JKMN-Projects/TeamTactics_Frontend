@@ -9,6 +9,7 @@ import { RegisterComponent } from './modals/register/register.component';
 import { AuthenticationService } from './services/authentication.service';
 import { JoinTournamentComponent } from './modals/join-tournament/join-tournament.component';
 import { JwtTokenService } from './services/jwt-token.service';
+import { Token } from './interfaces/token';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,18 @@ export class AppComponent {
 
   loggedIn$ = this.authService.loggedIn$;
 
-  constructor(private matDialog: MatDialog, private router: Router, private authService: AuthenticationService, private jwt: JwtTokenService) {}
+  constructor(private matDialog: MatDialog, private router: Router, private authService: AuthenticationService, private jwt: JwtTokenService) {
+    if (sessionStorage.getItem("accessToken")) {
+      if (this.authService.checkLoginState()) {
+        let token = {
+          token: sessionStorage.getItem("accessToken"),
+          tokenType: "JWT"
+        } as Token;
+
+        this.authService.checkResponse(token);
+      }
+    }
+  }
 
   openLoginDialog() {
     this.matDialog.open(LoginComponent)
