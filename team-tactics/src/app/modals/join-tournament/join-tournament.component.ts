@@ -29,8 +29,8 @@ export class JoinTournamentComponent {
   constructor(@Inject(MAT_DIALOG_DATA) private data: number, private tournamentService: TournamentService,
     private fb: FormBuilder, private matDialogRef: MatDialogRef<JoinTournamentComponent>) {
     this.tournamentForm = this.fb.group({
-      inviteCode: ['', Validators.required, Validators.minLength(6), Validators.maxLength(6)],
-      teamName: ['', Validators.required, Validators.minLength(3), Validators.maxLength(50)]
+      inviteCode: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
+      teamName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]]
     });
   }
 

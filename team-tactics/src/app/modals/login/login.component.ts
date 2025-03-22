@@ -29,8 +29,8 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder, private authService: AuthenticationService, private matDialogRef: MatDialogRef<LoginComponent>) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]]
     });
   }
 

@@ -24,7 +24,6 @@ export class AuthenticationService {
 
   getToken(login: Login) {
     this.httpClient.post<Token>(this.url + 'login', login).subscribe(x => {
-      console.log(x);
       this.checkResponse(x);
     });
   };
