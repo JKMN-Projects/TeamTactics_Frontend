@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog'
 import { LoginComponent } from './modals/login/login.component';
 import { RegisterComponent } from './modals/register/register.component';
@@ -18,6 +18,7 @@ import { JwtTokenService } from './services/jwt-token.service';
     MatToolbarModule,
     MatButtonModule,
     CommonModule,
+    AsyncPipe,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -39,7 +40,7 @@ export class AppComponent {
 
   openJoinTournamentDialog() {
     this.matDialog.open(JoinTournamentComponent, {
-      data: Number.parseInt(this.jwt.getUserId())
+      data: this.jwt.getUserId()
     }).afterClosed().subscribe(x => {
       if (x) {
         this.router.navigateByUrl("tournament");

@@ -8,14 +8,16 @@ export class JwtTokenService {
   constructor() { }
 
   getUserId() {
-    return this.getJwtClaim().userId;
+    return this.getJwtClaim().nameId;
   }
 
   getJwtClaim(): JwtClaim {
     let jsonObject = JSON.parse(atob(sessionStorage.getItem("accessToken")!.split('.')[1]));
 
     return {
-      userId: jsonObject.userId
+      nameId: Number.parseInt(jsonObject.userId),
+      email: jsonObject.email,
+      unique_name: jsonObject.unique_name
     } as JwtClaim;
   }
 }

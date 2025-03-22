@@ -51,9 +51,13 @@ export class AuthenticationService {
   };
 
   checkResponse(x: Token) {
-    if (x.accessToken.length > 0) {
-      sessionStorage.setItem("accessToken", x.accessToken);
-      sessionStorage.setItem("refreshToken", x.refreshToken);
+    if (x.token.length > 0) {
+      if (x.tokenType == "JWT") {
+        sessionStorage.setItem("accessToken", x.token);
+      }
+      else {
+        sessionStorage.setItem("refreshToken", x.token);
+      }
 
       this.loggedIn = true;
       this.loggedInSubject$.next(true);

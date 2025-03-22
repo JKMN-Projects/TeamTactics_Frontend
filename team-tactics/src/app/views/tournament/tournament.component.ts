@@ -96,7 +96,7 @@ export class TournamentComponent implements AfterViewInit {
   }
 
   checkOwner(): boolean {
-    if (Number.parseInt(this.jwtService.getUserId()) == this.tournament.ownerUserId) {
+    if (this.jwtService.getUserId() == this.tournament.ownerUserId) {
       return true;
     }
     else {
@@ -118,7 +118,7 @@ export class TournamentComponent implements AfterViewInit {
     this.matDialog.open(CreateBulletinComponent, {
       data: {
         tournamentId: this.tournament.id,
-        userId: Number.parseInt(this.jwtService.getUserId())
+        userId: this.jwtService.getUserId()
       }
     })
   }

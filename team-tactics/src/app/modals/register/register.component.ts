@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RegisterUserRequest } from '../../interfaces/register';
 import { RegisterService } from '../../services/register.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +28,7 @@ import { RegisterService } from '../../services/register.service';
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private registerService: RegisterService) {
+  constructor(private fb: FormBuilder, private registerService: RegisterService, private matDialogRef: MatDialogRef<RegisterComponent>) {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
@@ -58,6 +59,8 @@ export class RegisterComponent {
       } as RegisterUserRequest;
 
       this.registerService.registerUser(register);
+
+      this.matDialogRef.close(true);
     }
   }
 }

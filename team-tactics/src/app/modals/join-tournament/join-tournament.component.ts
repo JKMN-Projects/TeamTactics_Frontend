@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { JoinTournament } from '../../interfaces/join-tournament';
 import { TournamentService } from '../../services/tournament.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-join-tournament',
@@ -17,6 +18,7 @@ import { TournamentService } from '../../services/tournament.service';
     MatInputModule,
     MatCardModule,
     ReactiveFormsModule,
+    MatButtonModule,
   ],
   templateUrl: './join-tournament.component.html',
   styleUrl: './join-tournament.component.css'

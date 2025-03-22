@@ -1,3 +1,5 @@
 export interface JwtClaim {
-  userId: string;
+  nameId: number;
+  unique_name: string;
+  email: string;
 }

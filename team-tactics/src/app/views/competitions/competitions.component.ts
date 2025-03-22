@@ -31,6 +31,7 @@ export class CompetitionsComponent {
     this.competitionService.getCompetitionList();
 
     this.competitionService.competitions$.subscribe(comp => {
+      console.log(comp);
       this.competitions = comp;
     })
   }
@@ -39,7 +40,7 @@ export class CompetitionsComponent {
     this.matDialog.open(CreateTournamentComponent, {
       data: {
         competitionId: comp.id,
-        userId: Number.parseInt(this.jwt.getUserId())
+        userId: this.jwt.getUserId()
       }
     }).afterClosed().subscribe(x => {
       if (x) {
