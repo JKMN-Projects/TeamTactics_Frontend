@@ -3,6 +3,7 @@ import { User } from '../interfaces/user';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpOptionsService } from './http-options.service';
 import { HttpClient } from '@angular/common/http';
+import { UserTournamentTeam } from '../interfaces/user-tournament-team';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,10 @@ export class UserService {
   private userSubject$: Subject<User> = new BehaviorSubject<User>(this.user);
   user$: Observable<User> = this.userSubject$.asObservable();
 
+  private userTeams: Array<UserTournamentTeam> = [];
+  private userTeamsSubject$: Subject<UserTournamentTeam[]> = new BehaviorSubject<UserTournamentTeam[]>(this.userTeams);
+  userTeams$: Observable<UserTournamentTeam[]> = this.userTeamsSubject$.asObservable();
+
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
   getUser(userId: number): void {
@@ -22,6 +27,14 @@ export class UserService {
 
     this.httpClient.get<User>(this.url + userId.toString() + "/Profile", this.httpOptions.getHttpOptions()).subscribe(response => {
       this.userSubject$.next(response);
+    });
+  }
+
+  getUserTournamentTeam(userId: number) {
+    this.userTeamsSubject$.next(this.userTeams);
+
+    this.httpClient.get<UserTournamentTeam[]>(this.url + userId.toString() + "/tournaments/teams", this.httpOptions.getHttpOptions()).subscribe(response => {
+      this.userTeamsSubject$.next(response);
     });
   }
 }

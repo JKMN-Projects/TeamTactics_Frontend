@@ -11,6 +11,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { JwtTokenService } from '../../services/jwt-token.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { User } from '../../interfaces/user';
+import { UserTournamentTeam } from '../../interfaces/user-tournament-team';
 
 @Component({
   selector: 'app-profile',
@@ -28,8 +29,8 @@ import { User } from '../../interfaces/user';
 export class ProfileComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['tournamentName', 'adminUsername', 'competitionName', 'startDate', 'endDate'];
-  dataSource = new MatTableDataSource<Tournament>();
+  displayedColumns: string[] = ['tournamentName', 'teamName', 'competitionName', 'startDate', 'endDate'];
+  dataSource = new MatTableDataSource<UserTournamentTeam>();
   user = {} as User;
 
   constructor(private router: Router, private userService: UserService, private tournamentService: TournamentService,
@@ -41,8 +42,8 @@ export class ProfileComponent implements AfterViewInit {
       this.user = user;
     })
 
-    this.tournamentService.tournaments$.subscribe(tournament => {
-      this.dataSource.data = tournament;
+    this.userService.userTeams$.subscribe(userTeams => {
+      this.dataSource.data = userTeams;
     })
   }
 
@@ -50,8 +51,8 @@ export class ProfileComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  navigateToTournament(tournament: Tournament) {
-    this.tournamentService.getTournament(tournament.id);
+  navigateToTournament(tournament: UserTournamentTeam) {
+    this.tournamentService.getTournament(tournament.tournamentId);
     this.router.navigateByUrl("tournament");
   }
 }
