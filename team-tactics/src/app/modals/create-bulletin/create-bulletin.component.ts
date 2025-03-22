@@ -29,9 +29,7 @@ export class CreateBulletinComponent {
   onSubmit() {
     let bulletin = {
       text: this.bulletin.value,
-      createdTime: Date.now().valueOf(),
-      tournamentId:
-      this.data.tournamentId,
+      tournamentId: this.data.tournamentId,
       userId: this.data.userId
     } as CreateBulletin;
 

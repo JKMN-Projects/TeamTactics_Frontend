@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateBulletinComponent } from '../../modals/create-bulletin/create-bulletin.component';
 import { Router } from '@angular/router';
 import { PointService } from '../../services/point.service';
+import { BulletinService } from '../../services/bulletin.service';
 
 @Component({
   selector: 'app-tournament',
@@ -56,7 +57,7 @@ export class TournamentComponent implements AfterViewInit {
   bulletins = new MatTableDataSource<Bulletin>();
 
   constructor(private tournamentService: TournamentService, private jwtService: JwtTokenService, private matDialog: MatDialog,
-    private router: Router, private pointService: PointService) {
+    private router: Router, private pointService: PointService, private bulletinService: BulletinService) {
     // let temp = new Array<Bulletin>();
     // for (let index = 0; index < 10; index++) {
     //   temp.push({ username: "Tester", text: index.toString() + " Lorem ipsum", createdTime: "06-03-2025 22:33" } as Bulletin)
@@ -81,9 +82,20 @@ export class TournamentComponent implements AfterViewInit {
 
     this.tournamentService.tournament$.subscribe(tournament => {
       this.tournament = tournament;
-    })
 
-    // Subscribe to bulletin observable
+      if (this.tournament.id > 0) {
+        this.tournamentService.getTournamentTeamList(tournament.id);
+        this.bulletinService.getBulletinList(tournament.id);
+      }
+    });
+
+    this.tournamentService.tournamentTeams$.subscribe(teams => {
+      this.tournamentTeams.data = teams;
+    });
+
+    this.bulletinService.bulletins$.subscribe(bulletins => {
+      this.bulletins.data = bulletins;
+    });
   }
 
   ngAfterViewInit(): void {
