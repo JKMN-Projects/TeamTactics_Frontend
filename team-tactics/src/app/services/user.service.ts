@@ -20,7 +20,7 @@ export class UserService {
   getUser(userId: number): void {
     this.userSubject$.next(this.user);
 
-    this.httpClient.get<User>(this.url + userId.toString(), this.httpOptions.getHttpOptions()).subscribe(response => {
+    this.httpClient.get<User>(this.url + userId.toString() + "/Profile", this.httpOptions.getHttpOptions()).subscribe(response => {
       this.userSubject$.next(response);
     });
   }
