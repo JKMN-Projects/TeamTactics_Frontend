@@ -20,7 +20,10 @@
 
       <div class="column columnWidth">
 
-        <button mat-raised-button color="primary" [disabled]="loggedIn$" [matTooltip]="!loggedIn$ ? '' : 'Login to create tournament'">Create user tournament</button>
+        <button mat-raised-button color="primary" [disabled]="!(loggedIn$ | async)"
+          [matTooltip]="!loggedIn$ ? '' : 'Login to create tournament'" (click)="openCreateTournament(comp)">
+          Create user tournament
+        </button>
 
       </div>
 

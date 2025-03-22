@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CreateTournament } from '../../interfaces/create-tournament';
 import { TournamentService } from '../../services/tournament.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-create-tournament',
@@ -17,6 +18,7 @@ import { TournamentService } from '../../services/tournament.service';
     MatInputModule,
     MatCardModule,
     ReactiveFormsModule,
+    MatButtonModule,
   ],
   templateUrl: './create-tournament.component.html',
   styleUrl: './create-tournament.component.css'
@@ -27,9 +29,9 @@ export class CreateTournamentComponent {
   constructor(@Inject(MAT_DIALOG_DATA) private data: { competitionId: number, userId: number }, private fb: FormBuilder,
   private tournamentService: TournamentService, private matDialogRef: MatDialogRef<CreateTournamentComponent>) {
     this.tournamentForm = this.fb.group({
-      name: ['', Validators.required, Validators.minLength(3), Validators.maxLength(50)],
-      description: ['', Validators.maxLength(500)],
-      teamName: ['', Validators.required, Validators.minLength(3), Validators.maxLength(50)]
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      description: ['', [Validators.maxLength(500)]],
+      teamName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]]
     });
   }
 

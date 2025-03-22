@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Competition } from '../../interfaces/competition';
@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
     CommonModule,
     MatButtonModule,
     MatTooltipModule,
+    AsyncPipe,
   ],
   templateUrl: './competitions.component.html',
   styleUrl: './competitions.component.css'
@@ -31,7 +32,6 @@ export class CompetitionsComponent {
     this.competitionService.getCompetitionList();
 
     this.competitionService.competitions$.subscribe(comp => {
-      console.log(comp);
       this.competitions = comp;
     })
   }

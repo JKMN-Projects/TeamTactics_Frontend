@@ -78,8 +78,10 @@ export class TournamentService {
   }
 
   createTournament(tournament: CreateTournament): void {
-    this.httpClient.post<CreateResponse>(this.url + 'create', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.statusCode == 201) {
+    this.httpClient.post<any>(this.url, tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      console.log(response);
+
+      if (response.status == 201) {
         this.getTournament(response.id);
       }
       else {

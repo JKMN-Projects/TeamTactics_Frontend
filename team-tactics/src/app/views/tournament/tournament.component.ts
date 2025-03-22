@@ -59,6 +59,8 @@ export class TournamentComponent implements AfterViewInit {
   constructor(private tournamentService: TournamentService, private jwtService: JwtTokenService, private matDialog: MatDialog,
     private router: Router, private pointService: PointService, private bulletinService: BulletinService) {
     this.tournamentService.tournament$.subscribe(tournament => {
+      console.log(tournament);
+
       this.tournament = tournament;
 
       if (this.tournament.id > 0) {

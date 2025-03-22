@@ -55,7 +55,6 @@ export class AuthenticationService {
     if (x.token.length > 0) {
       if (x.tokenType == "JWT") {
         sessionStorage.setItem("accessToken", x.token);
-        sessionStorage.setItem("tokenCreationTime", Date.now().valueOf().toString());
       }
       else {
         sessionStorage.setItem("refreshToken", x.token);
