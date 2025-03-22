@@ -36,7 +36,7 @@ export class JoinTournamentComponent {
 
   onSubmit() {
     let tournament = {
-      inviteCode: this.tournamentForm.get("name")?.value,
+      inviteCode: this.tournamentForm.get("inviteCode")?.value,
       teamName: this.tournamentForm.get("teamName")?.value,
       userId: this.data,
     } as JoinTournament;
