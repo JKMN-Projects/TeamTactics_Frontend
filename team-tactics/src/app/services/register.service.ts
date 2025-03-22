@@ -16,10 +16,9 @@ export class RegisterService {
     this.httpClient.post<any>(this.url, user, {
       headers: { 'Content-Type': 'application/json' }
     }).subscribe(x => {
-      console.log(x)
-      // if (x.status != 201) {
-      //   alert("Failed to register user")
-      // }
+      if (x.status != 201) {
+        alert("Failed to register user")
+      }
     });
   }
 }

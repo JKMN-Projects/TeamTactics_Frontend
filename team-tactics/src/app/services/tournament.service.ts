@@ -68,7 +68,7 @@ export class TournamentService {
   joinTournament(tournament: JoinTournament): void {
     this.httpClient.post<any>(this.url + 'join', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (response.staus == 201) {
-        this.getTournament(response.id);
+        this.getTournament(response.body.id);
       }
       else {
         alert("Failed to join tournament.");
@@ -78,10 +78,10 @@ export class TournamentService {
 
   createTournament(tournament: CreateTournament): void {
     this.httpClient.post<any>(this.url, tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      console.log(response);
+      console.log(response.body.id);
 
       if (response.status == 201) {
-        this.getTournament(response.id);
+        this.getTournament(response.body.id);
       }
       else {
         alert("Failed to create tournament.");
@@ -91,7 +91,7 @@ export class TournamentService {
 
   updateTournament(tournament: Tournament): void {
     this.httpClient.put<any>(this.url + tournament.id.toString(), tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status != 201) {
+      if (response.status != 200) {
         alert("Failed to update tournament.");
       }
     });

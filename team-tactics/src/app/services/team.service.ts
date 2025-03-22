@@ -39,7 +39,7 @@ export class TeamService {
 
   createTeam(team: Team): void {
     this.httpClient.post<any>(this.url + 'create', team, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status < 200 && x.status > 299) {
+      if (x.status != 201) {
         alert("Failed to create team.")
       }
 
@@ -49,7 +49,7 @@ export class TeamService {
 
   lockTeam(teamId: Team): void {
     this.httpClient.put<any>(this.url + teamId.toString() + '/lock', this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status < 200 && x.status > 299) {
+      if (x.status != 200) {
         alert("Failed to lock team.")
       }
     });
@@ -57,7 +57,7 @@ export class TeamService {
 
   updateTeam(team: Team): void {
     this.httpClient.put<any>(this.url + 'update', team, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status < 200 && x.status > 299) {
+      if (x.status != 200) {
         alert("Failed to update team.")
       }
 
@@ -67,7 +67,7 @@ export class TeamService {
 
   deleteTeam(team: Team): void {
     this.httpClient.put<any>(this.url + 'delete/' + team.id.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status < 200 && x.status > 299) {
+      if (x.status != 200) {
         alert("Failed to delete team.")
       }
 
