@@ -36,7 +36,7 @@ export class ProfileComponent implements AfterViewInit {
   constructor(private router: Router, private userService: UserService, private tournamentService: TournamentService,
     private jwt: JwtTokenService) {
     this.userService.getUser(this.jwt.getUserId());
-    this.tournamentService.getTournamentList();
+    this.userService.getUserTournamentTeam(this.jwt.getUserId());
 
     this.userService.user$.subscribe(user => {
       this.user = user;
