@@ -70,7 +70,7 @@ export class AuthenticationService {
   }
 
   checkLoginState(): boolean {
-    if (this.jwt.getJwtClaim().expiry < Date.now().valueOf()) {
+    if (this.jwt.getJwtClaim().expiry > Number.parseInt((Date.now().valueOf() / 1000).toString())) {
       return true;
     }
     else {

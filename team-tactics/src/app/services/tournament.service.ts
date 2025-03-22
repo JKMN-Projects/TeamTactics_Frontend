@@ -3,7 +3,6 @@ import { Tournament } from '../interfaces/tournament';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpOptionsService } from './http-options.service';
 import { HttpClient } from '@angular/common/http';
-import { CreateResponse } from '../interfaces/create-response';
 import { TournamentTeam } from '../interfaces/tournament-team';
 import { CreateTournament } from '../interfaces/create-tournament';
 import { JoinTournament } from '../interfaces/join-tournament';
@@ -67,8 +66,8 @@ export class TournamentService {
   }
 
   joinTournament(tournament: JoinTournament): void {
-    this.httpClient.post<CreateResponse>(this.url + 'join', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.statusCode == 201) {
+    this.httpClient.post<any>(this.url + 'join', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.staus == 201) {
         this.getTournament(response.id);
       }
       else {
