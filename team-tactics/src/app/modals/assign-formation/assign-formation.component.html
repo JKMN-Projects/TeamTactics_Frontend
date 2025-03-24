@@ -1,0 +1,29 @@
+<mat-card class="card">
+
+  <mat-card-header>
+
+    <mat-card-title>Assign formation</mat-card-title>
+
+  </mat-card-header>
+
+  <mat-card-content>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Select formation</mat-label>
+            <mat-select [formControl]="formationControl">
+              <mat-option *ngFor="let formation of formations" [value]="formation">
+                {{ formation.name }}
+              </mat-option>
+            </mat-select>
+          <mat-error *ngIf="formationControl.hasError('required')">
+            Must select a formation
+          </mat-error>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" [disabled]="formationControl.invalid" (click)="onSubmit()">Save</button>
+        </div>
+
+  </mat-card-content>
+
+</mat-card>

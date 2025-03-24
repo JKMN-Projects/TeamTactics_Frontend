@@ -73,15 +73,15 @@ export class TournamentService {
   getBulletinList(tournamentId: number): void {
     this.bulletinsSubject$.next(this.bulletins);
 
-    this.httpClient.get<Bulletin[]>(this.url + tournamentId.toString() + "/bulletins", this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      this.bulletinsSubject$.next(x);
+    this.httpClient.get<Bulletin[]>(this.url + tournamentId.toString() + "/bulletins", this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      this.bulletinsSubject$.next(response);
     });
   }
 
   createBulletin(bulletin: Bulletin, tournamentId: number): void {
-    this.httpClient.post<any>(this.url + tournamentId.toString() + "/create-bulletin", bulletin, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.statusCode != 201) {
-        alert("Failed to create team.")
+    this.httpClient.post<any>(this.url + tournamentId.toString() + "/create-bulletin", bulletin, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.statusCode != 201) {
+        alert(response.title)
       }
 
       this.getBulletinList(tournamentId);
@@ -94,18 +94,20 @@ export class TournamentService {
         this.getTournament(response.body.id);
       }
       else {
-        alert("Failed to join tournament.");
+        alert(response.title);
       }
     });
   }
 
   createTournament(tournament: CreateTournament): void {
     this.httpClient.post<any>(this.url, tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+
       if (response.status == 201) {
-        this.getTournament(response.body.id);
+        console.log(response);
+        // this.getTournament(Number.parseInt(response.body.id));
       }
       else {
-        alert("Failed to create tournament.");
+        alert(response.title);
       }
     });
   }
@@ -113,7 +115,7 @@ export class TournamentService {
   updateTournament(tournament: Tournament): void {
     this.httpClient.put<any>(this.url + tournament.id.toString(), tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (response.status != 200) {
-        alert("Failed to update tournament.");
+        alert(response.title);
       }
     });
   }
@@ -121,7 +123,7 @@ export class TournamentService {
   deleteTournament(tournament: Tournament): void {
     this.httpClient.put<any>(this.url + tournament.id.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (response.status != 200) {
-        alert("Failed to delete tournament.")
+        alert(response.title)
       }
     });
   }

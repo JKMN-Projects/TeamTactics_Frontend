@@ -14,8 +14,11 @@ import { TeamPlayer } from '../../interfaces/team-player';
 import { CompetitionService } from '../../services/competition.service';
 import { PlayerService } from '../../services/player.service';
 import { TeamService } from '../../services/team.service';
+import { MatIconModule } from '@angular/material/icon';
+import { Team } from '../../interfaces/team';
+import { AssignFormationComponent } from '../../modals/assign-formation/assign-formation.component';
 
-enum positions {
+export enum positions {
   Attacker,
   Midfielder,
   Defender,
@@ -32,6 +35,7 @@ enum positions {
     MatSlideToggleModule,
     CommonModule,
     MatButtonModule,
+    MatIconModule,
     NgClass,
   ],
   templateUrl: './team-formation.component.html',
@@ -40,115 +44,63 @@ enum positions {
 export class TeamFormationComponent {
   displayedColumns: string[] = ['name', 'position', 'club', 'captain'];
 
-  premierLeagueClubs = [
-    { clubId: 1, clubName: 'Arsenal' },
-    { clubId: 2, clubName: 'Aston Villa' },
-    { clubId: 3, clubName: 'Bournemouth' },
-    { clubId: 4, clubName: 'Brentford' },
-    { clubId: 5, clubName: 'Brighton' },
-    { clubId: 6, clubName: 'Chelsea' },
-    { clubId: 7, clubName: 'Crystal Palace' },
-    { clubId: 8, clubName: 'Everton' },
-    { clubId: 9, clubName: 'Fulham' },
-    { clubId: 10, clubName: 'Ipswich Town' },
-    { clubId: 11, clubName: 'Leicester City' },
-    { clubId: 12, clubName: 'Liverpool' },
-    { clubId: 13, clubName: 'Manchester City' },
-    { clubId: 14, clubName: 'Manchester Utd' },
-    { clubId: 15, clubName: 'Newcastle Utd' },
-    { clubId: 16, clubName: 'Nottingham Forest' },
-    { clubId: 17, clubName: 'Southampton' },
-    { clubId: 18, clubName: 'Tottenham' },
-    { clubId: 19, clubName: 'West Ham' },
-    { clubId: 20, clubName: 'Wolverhampton' },
-  ];
-
-  playerPositions = [
-    { positionId: 1, positionName: 'Goalkeeper' },
-    { positionId: 2, positionName: 'Defender' },
-    { positionId: 3, positionName: 'Midfielder' },
-    { positionId: 4, positionName: 'Attacker' },
-  ];
-
   players: Player[] = [];
 
-  formations: { [key: string]: Formation } = {
-    '4-4-2': {
-      goalkeeper: this.emptyPlayerObject(1),
-      defenders: [this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2)],
-      midfielders: [this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3)],
-      attackers: [this.emptyPlayerObject(4), this.emptyPlayerObject(4)],
+  formation!: Formation;
+  formations = new Array<Formation>();
+  userRoster = new MatTableDataSource<TeamPlayer>();
+
+  team: Team = {
+    id: 0,
+    name: "",
+    locked: false,
+    formation: {
+      id: 0,
+      name: "",
+      goalkeeper: 0,
+      defenderAmount: 0,
+      midfielderAmount: 0,
+      attackerAmount: 0,
     },
-    '4-3-3': {
-      goalkeeper: this.emptyPlayerObject(1),
-      defenders: [this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2)],
-      midfielders: [this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3)],
-      attackers: [this.emptyPlayerObject(4), this.emptyPlayerObject(4), this.emptyPlayerObject(4)],
-    },
-    '3-4-3': {
-      goalkeeper: this.emptyPlayerObject(1),
-      defenders: [this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2)],
-      midfielders: [this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3)],
-      attackers: [this.emptyPlayerObject(4), this.emptyPlayerObject(4), this.emptyPlayerObject(4)],
-    },
-    '3-5-2': {
-      goalkeeper: this.emptyPlayerObject(1),
-      defenders: [this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2)],
-      midfielders: [this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3)],
-      attackers: [this.emptyPlayerObject(4), this.emptyPlayerObject(4)],
-    },
-    '5-3-2': {
-      goalkeeper: this.emptyPlayerObject(1),
-      defenders: [this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2)],
-      midfielders: [this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3)],
-      attackers: [this.emptyPlayerObject(4), this.emptyPlayerObject(4)],
-    },
-    '5-4-1': {
-      goalkeeper: this.emptyPlayerObject(1),
-      defenders: [this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2)],
-      midfielders: [this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3)],
-      attackers: [this.emptyPlayerObject(4)],
-    },
-    '4-5-1': {
-      goalkeeper: this.emptyPlayerObject(1),
-      defenders: [this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2), this.emptyPlayerObject(2)],
-      midfielders: [this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3), this.emptyPlayerObject(3)],
-      attackers: [this.emptyPlayerObject(4)],
-    },
+    players: []
   };
 
-  formationKeys = Object.keys(this.formations);
-  selectedFormation: string = '4-4-2';
-  formation = this.formations[this.selectedFormation];
-
-  rosterLocked = false;
-  userRoster = new MatTableDataSource<TeamPlayer>();
-  userRosterAttackers = new Array<Player>();
-  userRosterMidfielders = new Array<Player>();
-  userRosterDefenders = new Array<Player>();
-  userRosterGoalkeepers = new Array<Player>();
-
   constructor(private matDialog: MatDialog, private playerService: PlayerService, private teamService: TeamService) {
-    this.teamService.teamPlayers$.subscribe(teamPlayer => {
-      this.userRoster.data = teamPlayer;
+    this.teamService.team$.subscribe(team => {
+      this.team = team;
+      this.formation = team.formation;
 
-      if (this.userRoster.data.length > 0) {
-        this.setUserRoster();
+      if (team.players.length > 0) {
+        this.userRoster.data = team.players;
       }
-    })
-
+      else {
+        this.formation = this.formations[2];
+      }
+    });
 
     this.playerService.players$.subscribe(players => {
       this.players = players;
-    })
-
-    this.generatePlayers();
-
-    this.setUserRoster();
+    });
   }
 
-  emptyPlayerObject(positionId: number): Player {
-    return { id: 0, firstName: "Click to", lastName: "choose", clubId: 0, clubName: "", positionId: positionId, positionName: this.getPositionName(positionId) }
+  emptyPlayerObject(positionId: number, amount: number): TeamPlayer[] {
+    let temp = new Array<TeamPlayer>();
+
+    for (let index = 0; index < amount; index++) {
+      temp.push({
+        id: 0,
+        firstName: "Click to",
+        lastName: "choose",
+        captain: false,
+        clubId: 0,
+        clubName: "",
+        clubShorthand: "",
+        positionId: positionId,
+        positionName: this.getPositionName(positionId),
+      })
+    }
+
+    return temp;
   }
 
   getPositionName(positionId: number) {
@@ -168,168 +120,61 @@ export class TeamFormationComponent {
     return "";
   }
 
-  lockRoster() {
-    this.rosterLocked = !this.rosterLocked;
-  }
+  getPlayersByPositionId(positionId: number,) {
+    let temp: Array<TeamPlayer> = this.userRoster.data.filter(player => player.positionId = positionId);
 
-  generatePlayers() {
-    let playerId = 0;
-    this.premierLeagueClubs.forEach(club => {
-      this.playerPositions.forEach(position => {
-        for (let i = 1; i <= 5; i++) {
-          this.players.push({
-            id: playerId++,
-            firstName: `FirstName${playerId}`,
-            lastName: `LastName${playerId}`,
-            clubId: club.clubId,
-            clubName: club.clubName,
-            positionId: position.positionId,
-            positionName: position.positionName,
-          });
+    switch (positionId) {
+      case positions.Attacker:
+        if (temp.length < this.team.formation.attackerAmount) {
+          temp = temp.concat(this.emptyPlayerObject(positions.Attacker, this.team.formation.attackerAmount - temp.length));
         }
-      });
-    });
+        break;
+      case positions.Midfielder:
+        if (temp.length < this.team.formation.midfielderAmount) {
+          temp = temp.concat(this.emptyPlayerObject(positions.Midfielder, this.team.formation.midfielderAmount - temp.length));
+        }
+        break;
+      case positions.Defender:
+        if (temp.length < this.team.formation.defenderAmount) {
+          temp = temp.concat(this.emptyPlayerObject(positions.Defender, this.team.formation.defenderAmount - temp.length));
+        }
+        break;
+      case positions.Goalkeeper:
+        if (temp.length < this.team.formation.goalkeeper) {
+          temp.push(this.emptyPlayerObject(positions.Goalkeeper, 1)[0])
+        }
+        break;
+      default:
+        break;
+    }
+
+    return temp;
   }
 
-  onFormationChange(event: MatSelectChange) {
-    this.selectedFormation = event.value;
-    this.formation = this.formations[this.selectedFormation];
+  checkLockAvailability() {
+    let playerCount = 0;
+    let captainAssigned = false;
 
-    let tempRoster = new Array<TeamPlayer>();
+    this.userRoster.data.forEach(player => {
+      playerCount++;
+      captainAssigned = player.captain;
+    })
 
-    let goalkeeper = {
-      id: this.formation.goalkeeper.id,
-      firstName: this.formation.goalkeeper.firstName,
-      lastName: this.formation.goalkeeper.lastName,
-      captain: false,
-      clubId: this.formation.goalkeeper.clubId,
-      clubName: this.formation.goalkeeper.clubName,
-      clubShorthand: "",
-      positionId: this.formation.goalkeeper.positionId,
-      positionName: this.formation.goalkeeper.positionName
-    } as TeamPlayer;
-
-    tempRoster.push(goalkeeper);
-
-    this.formation.defenders.forEach(d => {
-      let tempPlayer = {
-        id: d.id,
-        firstName: d.firstName,
-        lastName: d.lastName,
-        captain: false,
-        clubId: d.clubId,
-        clubName: d.clubName,
-        clubShorthand: "",
-        positionId: d.positionId,
-        positionName: d.positionName
-      } as TeamPlayer;
-
-      tempRoster.push(tempPlayer);
-    });
-
-    this.formation.midfielders.forEach(m => {
-      let tempPlayer = {
-        id: m.id,
-        firstName: m.firstName,
-        lastName: m.lastName,
-        captain: false,
-        clubId: m.clubId,
-        clubName: m.clubName,
-        clubShorthand: "",
-        positionId: m.positionId,
-        positionName: m.positionName
-      } as TeamPlayer;
-
-      tempRoster.push(tempPlayer);
-    });
-
-    this.formation.attackers.forEach(a => {
-      let tempPlayer = {
-        id: a.id,
-        firstName: a.firstName,
-        lastName: a.lastName,
-        captain: false,
-        clubId: a.clubId,
-        clubName: a.clubName,
-        clubShorthand: "",
-        positionId: a.positionId,
-        positionName: a.positionName
-      } as TeamPlayer;
-
-      tempRoster.push(tempPlayer);
-    });
-
-    this.userRoster.data = tempRoster;
+    return playerCount == 11 && captainAssigned ? true : false;
   }
 
-  setUserRoster() {
-    let tempRoster = new Array<TeamPlayer>();
+  lockRoster() {
+    this.teamService.lockTeam(this.team.id);
+  }
 
-    let goalkeeper = this.userRoster.data.filter(x => x.positionId == positions.Goalkeeper)
-
-    // let goalkeeper = {
-    //   id: this.formation.goalkeeper.id,
-    //   firstName: this.formation.goalkeeper.firstName,
-    //   lastName: this.formation.goalkeeper.lastName,
-    //   captain: false,
-    //   clubId: this.formation.goalkeeper.clubId,
-    //   clubName: this.formation.goalkeeper.clubName,
-    //   clubShorthand: "",
-    //   positionId: this.formation.goalkeeper.positionId,
-    //   positionName: this.formation.goalkeeper.positionName
-    // } as TeamPlayer;
-
-    // tempRoster.push(goalkeeper);
-
-    this.formation.defenders.forEach(d => {
-      let tempPlayer = {
-        id: d.id,
-        firstName: d.firstName,
-        lastName: d.lastName,
-        captain: false,
-        clubId: d.clubId,
-        clubName: d.clubName,
-        clubShorthand: "",
-        positionId: d.positionId,
-        positionName: d.positionName
-      } as TeamPlayer;
-
-      tempRoster.push(tempPlayer);
-    });
-
-    this.formation.midfielders.forEach(m => {
-      let tempPlayer = {
-        id: m.id,
-        firstName: m.firstName,
-        lastName: m.lastName,
-        captain: false,
-        clubId: m.clubId,
-        clubName: m.clubName,
-        clubShorthand: "",
-        positionId: m.positionId,
-        positionName: m.positionName
-      } as TeamPlayer;
-
-      tempRoster.push(tempPlayer);
-    });
-
-    this.formation.attackers.forEach(a => {
-      let tempPlayer = {
-        id: a.id,
-        firstName: a.firstName,
-        lastName: a.lastName,
-        captain: false,
-        clubId: a.clubId,
-        clubName: a.clubName,
-        clubShorthand: "",
-        positionId: a.positionId,
-        positionName: a.positionName
-      } as TeamPlayer;
-
-      tempRoster.push(tempPlayer);
-    });
-
-    this.userRoster.data = tempRoster;
+  openAssignFormation() {
+    this.matDialog.open(AssignFormationComponent, {
+      data: {
+        teamId: this.team.id,
+        formation: this.team.formation,
+        roster: this.team.players
+      }
+    })
   }
 
   openAssignCaptain() {
@@ -344,7 +189,11 @@ export class TeamFormationComponent {
     })
   }
 
-  openAssignPlayer(positionId: number, positionName: string, index: number) {
+  openAssignPlayer(positionId: number, positionName: string, index: number, playerIdToRemove: number) {
+    if (playerIdToRemove > 0) {
+      this.teamService.removePlayer(this.team.id, playerIdToRemove)
+    }
+
     this.matDialog.open(AssignPlayerComponent, {
       width: '600px',
       data: {
@@ -355,25 +204,13 @@ export class TeamFormationComponent {
       }
     }).afterClosed().subscribe(playerAssigned => {
       if (index != undefined && playerAssigned != undefined) {
-        switch (playerAssigned.positionId) {
-          case 1:
-            this.formation.goalkeeper = playerAssigned;
-            break;
-          case 2:
-            this.formation.defenders[index] = playerAssigned;
-            break;
-          case 3:
-            this.formation.midfielders[index] = playerAssigned;
-            break;
-          case 4:
-            this.formation.attackers[index] = playerAssigned;
-            break;
-          default:
-            break;
-        }
-
-        this.setUserRoster();
+        this.teamService.assignPlayer(playerAssigned, this.team.id);
+        this.teamService.getTeam(this.team.id);
       }
     })
+  }
+
+  removePlayer(playerId: number) {
+    this.teamService.removePlayer(this.team.id, playerId);
   }
 }

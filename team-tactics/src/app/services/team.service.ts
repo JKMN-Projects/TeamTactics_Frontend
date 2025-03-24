@@ -7,6 +7,7 @@ import { AssignPlayer } from '../interfaces/assign-player';
 import { AssignCaptain } from '../interfaces/assign-captain';
 import { PointTeam } from '../interfaces/point-team';
 import { TeamPlayer } from '../interfaces/team-player';
+import { Formation } from '../interfaces/formation';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,17 @@ export class TeamService {
   url: string = 'https://teamtactics-backend.ambitiousmoss-465e145e.northeurope.azurecontainerapps.io/api/teams/';
   localUrl: string = 'https://localhost:5432/api/teams/';
 
+  private team = { id: 0, name: "", locked: false } as Team;
+  private teamSubject$: Subject<Team> = new BehaviorSubject<Team>(this.team);
+  team$: Observable<Team> = this.teamSubject$.asObservable();
+
   private teams: Array<Team> = [];
   private teamsSubject$: Subject<Team[]> = new BehaviorSubject<Team[]>(this.teams);
   teams$: Observable<Team[]> = this.teamsSubject$.asObservable();
 
-  private team = { id: 0, name: "", status: 0, userId: 0, userTournamentId: 0 } as Team;
-  private teamSubject$: Subject<Team> = new BehaviorSubject<Team>(this.team);
-  team$: Observable<Team> = this.teamSubject$.asObservable();
+  private formations: Array<Formation> = [];
+  private formationsSubject$: Subject<Formation[]> = new BehaviorSubject<Formation[]>(this.formations);
+  formations$: Observable<Formation[]> = this.formationsSubject$.asObservable();
 
   private teamPoints: Array<PointTeam> = [];
   private teamPointsSubject$: Subject<PointTeam[]> = new BehaviorSubject<PointTeam[]>(this.teamPoints);
@@ -33,19 +38,19 @@ export class TeamService {
 
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
-  getTeamList(userTournamentId: number): void {
+  getTeam(teamId: number): void {
     this.teamsSubject$.next(this.teams);
 
-    this.httpClient.get<Team[]>(this.url + userTournamentId, this.httpOptions.getHttpOptions()).subscribe(x => {
-      this.teamsSubject$.next(x);
+    this.httpClient.get<Team[]>(this.url + teamId, this.httpOptions.getHttpOptions()).subscribe(response => {
+      this.teamsSubject$.next(response);
     });
   }
 
-  getTeam(userTournamentId: number): void {
-    this.teamsSubject$.next(this.teams);
+  getFormations() {
+    this.formationsSubject$.next(this.formations);
 
-    this.httpClient.get<Team[]>(this.url + userTournamentId, this.httpOptions.getHttpOptions()).subscribe(x => {
-      this.teamsSubject$.next(x);
+    this.httpClient.get<Formation[]>(this.url + 'formations', this.httpOptions.getHttpOptions()).subscribe(response => {
+      this.formationsSubject$.next(response);
     });
   }
 
@@ -66,60 +71,81 @@ export class TeamService {
   }
 
   createTeam(team: Team): void {
-    this.httpClient.post<any>(this.url + 'create', team, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status != 201) {
-        alert("Failed to create team.")
+    this.httpClient.post<any>(this.url + 'create', team, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.status != 201) {
+        alert(response.title)
       }
-
-      this.getTeamList(team.userTournamentId);
     });
   }
 
-  lockTeam(teamId: Team): void {
-    this.httpClient.put<any>(this.url + teamId.toString() + '/lock', this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status != 200) {
-        alert("Failed to lock team.")
+  lockTeam(teamId: number): void {
+    this.httpClient.patch<any>(this.url + teamId.toString() + '/lock', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.status == 204) {
+        this.getTeam(teamId);
+      }
+      else {
+        alert(response.title);
+      }
+    });
+  }
+
+  assignFormation(teamId: number, formationId: number) {
+    this.httpClient.put<any>(this.url + teamId.toString() + '/formations/' + formationId.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.status == 204) {
+        this.getTeam(teamId);
+      }
+      else {
+        alert(response.title);
       }
     });
   }
 
   assignPlayer(request: AssignPlayer, teamId: number): void {
-    this.httpClient.put<any>(this.url + teamId.toString() + '/players/add', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status != 200) {
-        alert("Failed to assign player.")
+    this.httpClient.put<any>(this.url + teamId.toString() + '/players/add', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.status == 204) {
+        this.getTeam(teamId);
+      }
+      else {
+        alert(response.title);
       }
     });
   }
 
   assignCaptain(request: AssignCaptain, teamId: number): void {
-    this.httpClient.put<any>(this.url + teamId.toString() + '/set-captain', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status != 200) {
-        alert("Failed to assign captain.")
+    this.httpClient.put<any>(this.url + teamId.toString() + '/set-captain', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.status == 204) {
+        this.getTeam(teamId);
+      }
+      else {
+        alert(response.title);
       }
     });
   }
 
   removePlayer(teamId: number, playerId: number) {
-    this.httpClient.delete<any>(this.url + teamId.toString() + '/players/' + playerId.toString() + '/remove');
-  }
-
-  updateTeam(team: Team): void {
-    this.httpClient.put<any>(this.url + 'update', team, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status != 200) {
-        alert("Failed to update team.")
+    this.httpClient.put<any>(this.url + teamId.toString() + '/players/' + playerId.toString() + '/remove', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.status == 204) {
+        this.getTeam(teamId);
       }
-
-      this.getTeamList(team.userTournamentId);
+      else {
+        alert(response.title);
+      }
     });
   }
 
-  deleteTeam(team: Team): void {
-    this.httpClient.put<any>(this.url + 'delete/' + team.id.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status != 200) {
-        alert("Failed to delete team.")
+  renameTeam(team: Team): void {
+    this.httpClient.patch<any>(this.url + '/' + team.id.toString(), team, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.status != 200) {
+        alert(response.title)
       }
+    });
+  }
 
-      this.getTeamList(team.userTournamentId);
+  deleteTeam(teamId: number): void {
+    this.httpClient.put<any>(this.url + '/' + teamId.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      if (response.status != 200) {
+        alert(response.title)
+      }
     });
   }
 }

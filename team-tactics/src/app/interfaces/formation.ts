@@ -1,8 +1,10 @@
-import { Player } from "./player";
+import { TeamPlayer } from "./team-player";
 
 export interface Formation {
-  goalkeeper: Player,
-  defenders: Player[],
-  midfielders: Player[],
-  attackers: Player[]
+  id: number;
+  name: string;
+  goalkeeper: number;
+  defenderAmount: number;
+  midfielderAmount: number;
+  attackerAmount: number;
 }
