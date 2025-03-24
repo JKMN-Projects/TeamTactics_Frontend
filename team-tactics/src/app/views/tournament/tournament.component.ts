@@ -18,6 +18,7 @@ import { CreateBulletinComponent } from '../../modals/create-bulletin/create-bul
 import { Router } from '@angular/router';
 import { BulletinService } from '../../services/bulletin.service';
 import { TeamService } from '../../services/team.service';
+import { PlayerService } from '../../services/player.service';
 
 @Component({
   selector: 'app-tournament',
@@ -39,7 +40,7 @@ import { TeamService } from '../../services/team.service';
 export class TournamentComponent implements AfterViewInit {
   @ViewChildren(MatPaginator) paginators!: QueryList<MatPaginator>;
 
-  standingColumns: string[] = ['nr', 'teamName', 'totalPoints'];
+  standingColumns: string[] = ['nr', 'teamName', 'totalPoints', 'setTeam'];
   bulletinColumns: string[] = ['username', 'text', 'timestamp'];
 
   tournament = {
@@ -57,10 +58,8 @@ export class TournamentComponent implements AfterViewInit {
   bulletins = new MatTableDataSource<Bulletin>();
 
   constructor(private tournamentService: TournamentService, private jwtService: JwtTokenService, private matDialog: MatDialog,
-    private router: Router, private teamService: TeamService) {
+    private router: Router, private teamService: TeamService, private playerService: PlayerService) {
     this.tournamentService.tournament$.subscribe(tournament => {
-      console.log(tournament);
-
       this.tournament = tournament;
 
       if (this.tournament.id > 0) {
@@ -70,8 +69,6 @@ export class TournamentComponent implements AfterViewInit {
     });
 
     this.tournamentService.tournamentTeams$.subscribe(teams => {
-      console.log(teams);
-
       this.tournamentTeams.data = teams;
     });
 
@@ -90,12 +87,17 @@ export class TournamentComponent implements AfterViewInit {
   }
 
   checkOwner(): boolean {
-    if (this.jwtService.getUserId() == this.tournament.ownerUserId) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    return this.jwtService.getUserId() == this.tournament.ownerUserId ? true : false;
+  }
+
+  checkTeamOwner(team: TournamentTeam): boolean {
+    return this.jwtService.getUserId() == team.userId ? true : false;
+  }
+
+  navigateToCreateTeam(team: TournamentTeam) {
+    this.teamService.getTeamPlayers(team.teamId);
+    this.playerService.getPlayersByCompetitionId(this.tournament.competitionId);
+    this.router.navigateByUrl("create_team");
   }
 
   navigateToMatches() {

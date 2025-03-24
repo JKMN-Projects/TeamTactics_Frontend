@@ -13,6 +13,14 @@ import { AssignCaptainComponent } from '../../modals/assign-captain/assign-capta
 import { TeamPlayer } from '../../interfaces/team-player';
 import { CompetitionService } from '../../services/competition.service';
 import { PlayerService } from '../../services/player.service';
+import { TeamService } from '../../services/team.service';
+
+enum positions {
+  Attacker,
+  Midfielder,
+  Defender,
+  Goalkeeper
+}
 
 @Component({
   selector: 'app-team-formation',
@@ -120,7 +128,16 @@ export class TeamFormationComponent {
   userRosterDefenders = new Array<Player>();
   userRosterGoalkeepers = new Array<Player>();
 
-  constructor(private matDialog: MatDialog, private playerService: PlayerService) {
+  constructor(private matDialog: MatDialog, private playerService: PlayerService, private teamService: TeamService) {
+    this.teamService.teamPlayers$.subscribe(teamPlayer => {
+      this.userRoster.data = teamPlayer;
+
+      if (this.userRoster.data.length > 0) {
+        this.setUserRoster();
+      }
+    })
+
+
     this.playerService.players$.subscribe(players => {
       this.players = players;
     })
@@ -248,19 +265,21 @@ export class TeamFormationComponent {
   setUserRoster() {
     let tempRoster = new Array<TeamPlayer>();
 
-    let goalkeeper = {
-      id: this.formation.goalkeeper.id,
-      firstName: this.formation.goalkeeper.firstName,
-      lastName: this.formation.goalkeeper.lastName,
-      captain: false,
-      clubId: this.formation.goalkeeper.clubId,
-      clubName: this.formation.goalkeeper.clubName,
-      clubShorthand: "",
-      positionId: this.formation.goalkeeper.positionId,
-      positionName: this.formation.goalkeeper.positionName
-    } as TeamPlayer;
+    let goalkeeper = this.userRoster.data.filter(x => x.positionId == positions.Goalkeeper)
 
-    tempRoster.push(goalkeeper);
+    // let goalkeeper = {
+    //   id: this.formation.goalkeeper.id,
+    //   firstName: this.formation.goalkeeper.firstName,
+    //   lastName: this.formation.goalkeeper.lastName,
+    //   captain: false,
+    //   clubId: this.formation.goalkeeper.clubId,
+    //   clubName: this.formation.goalkeeper.clubName,
+    //   clubShorthand: "",
+    //   positionId: this.formation.goalkeeper.positionId,
+    //   positionName: this.formation.goalkeeper.positionName
+    // } as TeamPlayer;
+
+    // tempRoster.push(goalkeeper);
 
     this.formation.defenders.forEach(d => {
       let tempPlayer = {

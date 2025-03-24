@@ -64,21 +64,26 @@
 
               <ng-container matColumnDef="nr">
                 <th mat-header-cell *matHeaderCellDef>Nr</th>
-                <td mat-cell *matCellDef="let team">{{getIndex(team)}}</td>
+                <td mat-cell *matCellDef="let team" (click)="navigateToTeamPoints(team)">{{getIndex(team)}}</td>
               </ng-container>
 
               <ng-container matColumnDef="teamName">
                 <th mat-header-cell *matHeaderCellDef>Team name</th>
-                <td mat-cell *matCellDef="let team">{{team.teamName}}</td>
+                <td mat-cell *matCellDef="let team" (click)="navigateToTeamPoints(team)">{{team.teamName}}</td>
               </ng-container>
 
               <ng-container matColumnDef="totalPoints">
                 <th mat-header-cell *matHeaderCellDef>Points</th>
-                <td mat-cell *matCellDef="let team">{{team.totalPoints}}</td>
+                <td mat-cell *matCellDef="let team" (click)="navigateToTeamPoints(team)">{{team.totalPoints}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="setTeam">
+                <th mat-header-cell *matHeaderCellDef>Set team</th>
+                <td mat-cell *matCellDef="let team"><button mat-button color="accent" [disabled]="checkTeamOwner(team)" (click)="navigateToCreateTeam(team)"></button></td>
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="standingColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: standingColumns;" (click)="navigateToTeamPoints(row)"></tr>
+              <tr mat-row *matRowDef="let row; columns: standingColumns;"></tr>
 
             </table>
 

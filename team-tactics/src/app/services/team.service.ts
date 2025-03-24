@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AssignPlayer } from '../interfaces/assign-player';
 import { AssignCaptain } from '../interfaces/assign-captain';
 import { PointTeam } from '../interfaces/point-team';
+import { TeamPlayer } from '../interfaces/team-player';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,10 @@ export class TeamService {
   private teamPointsSubject$: Subject<PointTeam[]> = new BehaviorSubject<PointTeam[]>(this.teamPoints);
   teamPoints$: Observable<PointTeam[]> = this.teamPointsSubject$.asObservable();
 
+  private teamPlayers: Array<TeamPlayer> = [];
+  private teamPlayersSubject$: Subject<TeamPlayer[]> = new BehaviorSubject<TeamPlayer[]>(this.teamPlayers);
+  teamPlayers$: Observable<TeamPlayer[]> = this.teamPlayersSubject$.asObservable();
+
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
   getTeamList(userTournamentId: number): void {
@@ -44,10 +49,18 @@ export class TeamService {
     });
   }
 
+  getTeamPlayers(teamId: number) {
+    this.teamPlayersSubject$.next(this.teamPlayers);
+
+    this.httpClient.get<TeamPlayer[]>(this.url + teamId.toString() + '/players', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      this.teamPlayersSubject$.next(response);
+    });
+  }
+
   getTeamPoints(teamId: number) {
     this.teamPointsSubject$.next(this.teamPoints);
 
-    this.httpClient.get<PointTeam[]>(this.url + teamId + '/Points', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+    this.httpClient.get<PointTeam[]>(this.url + teamId.toString() + '/Points', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       this.teamPointsSubject$.next(response);
     });
   }

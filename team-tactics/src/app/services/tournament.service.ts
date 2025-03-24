@@ -58,7 +58,6 @@ export class TournamentService {
     this.tournamentTeamsSubject$.next(this.tournamentTeams);
 
     this.httpClient.get<TournamentTeam[]>(this.url + tournamentId.toString() + "/teams", this.httpOptions.getHttpOptions()).subscribe(response => {
-      console.log(response);
       this.tournamentTeamsSubject$.next(response);
     });
   }
@@ -102,8 +101,6 @@ export class TournamentService {
 
   createTournament(tournament: CreateTournament): void {
     this.httpClient.post<any>(this.url, tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      console.log(response.body.id);
-
       if (response.status == 201) {
         this.getTournament(response.body.id);
       }
