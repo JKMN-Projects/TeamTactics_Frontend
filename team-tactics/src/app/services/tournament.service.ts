@@ -7,6 +7,7 @@ import { TournamentTeam } from '../interfaces/tournament-team';
 import { CreateTournament } from '../interfaces/create-tournament';
 import { JoinTournament } from '../interfaces/join-tournament';
 import { TournamentMatch } from '../interfaces/tournament-match';
+import { Bulletin } from '../interfaces/bulletin';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,10 @@ export class TournamentService {
   private tournamentMatches: Array<TournamentMatch> = [];
   private tournamentMatchesSubject$: Subject<TournamentMatch[]> = new BehaviorSubject<TournamentMatch[]>(this.tournamentMatches);
   tournamentMatches$: Observable<TournamentMatch[]> = this.tournamentMatchesSubject$.asObservable();
+
+  private bulletins: Array<Bulletin> = [];
+  private bulletinsSubject$: Subject<Bulletin[]> = new BehaviorSubject<Bulletin[]>(this.bulletins);
+  bulletins$: Observable<Bulletin[]> = this.bulletinsSubject$.asObservable();
 
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
@@ -63,6 +68,24 @@ export class TournamentService {
 
     this.httpClient.get<TournamentMatch[]>(this.url + tournamentId.toString() + "/matches", this.httpOptions.getHttpOptions()).subscribe(response => {
       this.tournamentMatchesSubject$.next(response);
+    });
+  }
+
+  getBulletinList(tournamentId: number): void {
+    this.bulletinsSubject$.next(this.bulletins);
+
+    this.httpClient.get<Bulletin[]>(this.url + tournamentId.toString() + "/bulletins", this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
+      this.bulletinsSubject$.next(x);
+    });
+  }
+
+  createBulletin(bulletin: Bulletin, tournamentId: number): void {
+    this.httpClient.post<any>(this.url + tournamentId.toString() + "/create-bulletin", bulletin, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
+      if (x.statusCode != 201) {
+        alert("Failed to create team.")
+      }
+
+      this.getBulletinList(tournamentId);
     });
   }
 

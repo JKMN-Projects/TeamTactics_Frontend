@@ -57,7 +57,7 @@ export class TournamentComponent implements AfterViewInit {
   bulletins = new MatTableDataSource<Bulletin>();
 
   constructor(private tournamentService: TournamentService, private jwtService: JwtTokenService, private matDialog: MatDialog,
-    private router: Router, private teamService: TeamService, private bulletinService: BulletinService) {
+    private router: Router, private teamService: TeamService) {
     this.tournamentService.tournament$.subscribe(tournament => {
       console.log(tournament);
 
@@ -65,7 +65,7 @@ export class TournamentComponent implements AfterViewInit {
 
       if (this.tournament.id > 0) {
         this.tournamentService.getTournamentTeamList(tournament.id);
-        this.bulletinService.getBulletinList(tournament.id);
+        this.tournamentService.getBulletinList(tournament.id);
       }
     });
 
@@ -75,7 +75,7 @@ export class TournamentComponent implements AfterViewInit {
       this.tournamentTeams.data = teams;
     });
 
-    this.bulletinService.bulletins$.subscribe(bulletins => {
+    this.tournamentService.bulletins$.subscribe(bulletins => {
       this.bulletins.data = bulletins;
     });
   }
