@@ -38,10 +38,4 @@ export class PointService {
       this.matchPointsSubject$.next(x);
     });
   }
-
-  getTeamPoints(teamId: number) {
-    this.httpClient.get<PointTeam[]>(this.url + teamId, this.httpOptions.getHttpOptions()).subscribe(x => {
-      this.teamPointsSubject$.next(x);
-    });
-  }
 }

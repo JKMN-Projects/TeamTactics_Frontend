@@ -7,17 +7,17 @@ import { Tournament } from '../../interfaces/tournament';
 import { JwtTokenService } from '../../services/jwt-token.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormControl, ReactiveFormsModule, UntypedFormControl, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { Bulletin } from '../../interfaces/bulletin';
 import { ColumnWidthDirective } from '../../directives/column-width.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateBulletinComponent } from '../../modals/create-bulletin/create-bulletin.component';
 import { Router } from '@angular/router';
-import { PointService } from '../../services/point.service';
 import { BulletinService } from '../../services/bulletin.service';
+import { TeamService } from '../../services/team.service';
 
 @Component({
   selector: 'app-tournament',
@@ -57,7 +57,7 @@ export class TournamentComponent implements AfterViewInit {
   bulletins = new MatTableDataSource<Bulletin>();
 
   constructor(private tournamentService: TournamentService, private jwtService: JwtTokenService, private matDialog: MatDialog,
-    private router: Router, private pointService: PointService, private bulletinService: BulletinService) {
+    private router: Router, private teamService: TeamService, private bulletinService: BulletinService) {
     this.tournamentService.tournament$.subscribe(tournament => {
       console.log(tournament);
 
@@ -104,7 +104,7 @@ export class TournamentComponent implements AfterViewInit {
   }
 
   navigateToTeamPoints(team: TournamentTeam) {
-    this.pointService.getTeamPoints(team.teamId);
+    this.teamService.getTeamPoints(team.teamId);
     this.router.navigateByUrl("team");
   }
 
