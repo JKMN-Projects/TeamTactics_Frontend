@@ -4,6 +4,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { PointTeam } from '../../interfaces/point-team';
 import { PointService } from '../../services/point.service';
+import { TeamService } from '../../services/team.service';
 
 @Component({
   selector: 'app-team-points',
@@ -23,8 +24,8 @@ export class TeamPointsComponent implements AfterViewInit {
 
   teamPoints = new MatTableDataSource<PointTeam>();
 
-  constructor(private pointService: PointService) {
-    this.pointService.teamPoints$.subscribe(teamPoints => {
+  constructor(private teamService: TeamService) {
+    this.teamService.teamPoints$.subscribe(teamPoints => {
       this.teamPoints.data = teamPoints;
     })
   }
