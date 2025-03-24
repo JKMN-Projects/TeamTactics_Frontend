@@ -3,5 +3,4 @@ export interface CreateTournament {
   description: string;
   teamName: string;
   competitionId: number;
-  userId: number;
 }

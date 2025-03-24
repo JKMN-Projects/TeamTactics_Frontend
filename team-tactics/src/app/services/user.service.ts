@@ -34,6 +34,8 @@ export class UserService {
     this.userTeamsSubject$.next(this.userTeams);
 
     this.httpClient.get<UserTournamentTeam[]>(this.url + userId.toString() + "/tournaments/teams", this.httpOptions.getHttpOptions()).subscribe(response => {
+      console.log(response);
+
       this.userTeamsSubject$.next(response);
     });
   }

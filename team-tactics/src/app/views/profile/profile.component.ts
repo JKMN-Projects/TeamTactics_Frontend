@@ -43,6 +43,7 @@ export class ProfileComponent implements AfterViewInit {
     })
 
     this.userService.userTeams$.subscribe(userTeams => {
+      console.log(userTeams);
       this.dataSource.data = userTeams;
     })
   }

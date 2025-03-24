@@ -53,6 +53,7 @@ export class TournamentService {
     this.tournamentTeamsSubject$.next(this.tournamentTeams);
 
     this.httpClient.get<TournamentTeam[]>(this.url + tournamentId.toString() + "/teams", this.httpOptions.getHttpOptions()).subscribe(response => {
+      console.log(response);
       this.tournamentTeamsSubject$.next(response);
     });
   }
@@ -67,7 +68,7 @@ export class TournamentService {
 
   joinTournament(tournament: JoinTournament): void {
     this.httpClient.post<any>(this.url + 'join', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.staus == 201) {
+      if (response.staus == 200) {
         this.getTournament(response.body.id);
       }
       else {

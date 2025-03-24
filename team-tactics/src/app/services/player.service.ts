@@ -26,20 +26,4 @@ export class PlayerService {
       this.playersSubject$.next(x);
     });
   }
-
-  assignPlayer(request: AssignPlayer, teamId: number): void {
-    this.httpClient.put<any>(this.url + 'assignPlayer', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status != 200) {
-        alert("Failed to assign player.")
-      }
-    });
-  }
-
-  assignCaptain(request: AssignCaptain): void {
-    this.httpClient.put<any>(this.url + 'assignCaptain', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
-      if (x.status != 200) {
-        alert("Failed to assign captain.")
-      }
-    });
-  }
 }

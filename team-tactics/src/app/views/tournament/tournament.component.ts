@@ -70,6 +70,8 @@ export class TournamentComponent implements AfterViewInit {
     });
 
     this.tournamentService.tournamentTeams$.subscribe(teams => {
+      console.log(teams);
+
       this.tournamentTeams.data = teams;
     });
 

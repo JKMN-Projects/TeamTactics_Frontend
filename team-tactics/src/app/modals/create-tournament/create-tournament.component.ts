@@ -41,7 +41,6 @@ export class CreateTournamentComponent {
       description: this.tournamentForm.get("description")?.value,
       teamName: this.tournamentForm.get("teamName")?.value,
       competitionId: this.data.competitionId,
-      userId: this.data.userId,
     } as CreateTournament;
 
     this.tournamentService.createTournament(tournament);
