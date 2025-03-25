@@ -4,7 +4,8 @@ import { TeamPlayer } from "./team-player";
 export interface Team {
   id: number;
   name: string;
-  locked: boolean;
-  formation: Formation;
+  status: number;
+  isLocked: boolean;
+  formation: string;
   players: TeamPlayer[];
 }

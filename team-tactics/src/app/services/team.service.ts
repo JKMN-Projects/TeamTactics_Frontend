@@ -8,6 +8,7 @@ import { AssignCaptain } from '../interfaces/assign-captain';
 import { PointTeam } from '../interfaces/point-team';
 import { TeamPlayer } from '../interfaces/team-player';
 import { Formation } from '../interfaces/formation';
+import { AssignFormation } from '../interfaces/assign-formation';
 
 @Injectable({
   providedIn: 'root'
@@ -16,17 +17,9 @@ export class TeamService {
   url: string = 'https://teamtactics-backend.ambitiousmoss-465e145e.northeurope.azurecontainerapps.io/api/teams/';
   localUrl: string = 'https://localhost:5432/api/teams/';
 
-  private team = { id: 0, name: "", locked: false } as Team;
+  private team = { id: 0, name: "", status: 0, isLocked: false } as Team;
   private teamSubject$: Subject<Team> = new BehaviorSubject<Team>(this.team);
   team$: Observable<Team> = this.teamSubject$.asObservable();
-
-  private teams: Array<Team> = [];
-  private teamsSubject$: Subject<Team[]> = new BehaviorSubject<Team[]>(this.teams);
-  teams$: Observable<Team[]> = this.teamsSubject$.asObservable();
-
-  private formations: Array<Formation> = [];
-  private formationsSubject$: Subject<Formation[]> = new BehaviorSubject<Formation[]>(this.formations);
-  formations$: Observable<Formation[]> = this.formationsSubject$.asObservable();
 
   private teamPoints: Array<PointTeam> = [];
   private teamPointsSubject$: Subject<PointTeam[]> = new BehaviorSubject<PointTeam[]>(this.teamPoints);
@@ -39,26 +32,10 @@ export class TeamService {
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
   getTeam(teamId: number): void {
-    this.teamsSubject$.next(this.teams);
+    this.teamSubject$.next(this.team);
 
-    this.httpClient.get<Team[]>(this.url + teamId, this.httpOptions.getHttpOptions()).subscribe(response => {
-      this.teamsSubject$.next(response);
-    });
-  }
-
-  getFormations() {
-    this.formationsSubject$.next(this.formations);
-
-    this.httpClient.get<Formation[]>(this.url + 'formations', this.httpOptions.getHttpOptions()).subscribe(response => {
-      this.formationsSubject$.next(response);
-    });
-  }
-
-  getTeamPlayers(teamId: number) {
-    this.teamPlayersSubject$.next(this.teamPlayers);
-
-    this.httpClient.get<TeamPlayer[]>(this.url + teamId.toString() + '/players', this.httpOptions.getHttpOptions()).subscribe(response => {
-      this.teamPlayersSubject$.next(response);
+    this.httpClient.get<Team>(this.url + teamId, this.httpOptions.getHttpOptions()).subscribe(response => {
+      this.teamSubject$.next(response);
     });
   }
 
@@ -81,8 +58,8 @@ export class TeamService {
     });
   }
 
-  assignFormation(teamId: number, formationId: number) {
-    this.httpClient.put<any>(this.url + teamId.toString() + '/formations/' + formationId.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+  assignFormation(teamId: number, formation: AssignFormation) {
+    this.httpClient.put<any>(this.url + teamId.toString() + '/formations', formation, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (response.ok) {
         this.getTeam(teamId);
       }

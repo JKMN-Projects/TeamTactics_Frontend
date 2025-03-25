@@ -22,7 +22,7 @@ export class PlayerService {
   getPlayersByCompetitionId(competitionId: number): void {
     this.playersSubject$.next(this.players);
 
-    this.httpClient.get<Player[]>(this.url + 'competitions/' + competitionId, this.httpOptions.getHttpOptions()).subscribe(response => {
+    this.httpClient.get<Player[]>(this.url + "?" + competitionId.toString(), this.httpOptions.getHttpOptions()).subscribe(response => {
       this.playersSubject$.next(response);
     });
   }

@@ -74,7 +74,6 @@ export class TournamentComponent implements AfterViewInit {
     });
 
     this.tournamentService.bulletins$.subscribe(bulletins => {
-      console.log(bulletins);
       this.bulletins.data = bulletins;
     });
   }
@@ -93,13 +92,11 @@ export class TournamentComponent implements AfterViewInit {
   }
 
   checkTeamOwner(team: TournamentTeam): boolean {
-    console.log("JWT id: " + this.jwtService.getUserId())
-    console.log("Team id: " + team.userId)
     return this.jwtService.getUserId() == team.userId ? true : false;
   }
 
   navigateToCreateTeam(team: TournamentTeam) {
-    this.teamService.getTeamPlayers(team.teamId);
+    this.teamService.getTeam(team.teamId);
     this.playerService.getPlayersByCompetitionId(this.tournament.competitionId);
     this.router.navigateByUrl("create_team");
   }

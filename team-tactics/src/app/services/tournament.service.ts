@@ -59,7 +59,6 @@ export class TournamentService {
     this.tournamentTeamsSubject$.next(this.tournamentTeams);
 
     this.httpClient.get<any>(this.url + tournamentId.toString() + "/teams", this.httpOptions.getHttpOptions()).subscribe(response => {
-      console.log(response);
       this.tournamentTeamsSubject$.next(response);
     });
   }
@@ -76,7 +75,6 @@ export class TournamentService {
     this.bulletinsSubject$.next(this.bulletins);
 
     this.httpClient.get<any>(this.url + tournamentId.toString() + "/bulletins", this.httpOptions.getHttpOptions()).subscribe(response => {
-      console.log(response);
       this.bulletinsSubject$.next(response);
     });
   }

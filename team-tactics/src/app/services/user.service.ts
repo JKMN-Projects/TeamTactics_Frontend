@@ -41,7 +41,6 @@ export class UserService {
 
   registerUser(user: RegisterUserRequest): void {
     this.httpClient.post<any>(this.url + "register", user, { headers: { 'Content-Type': 'application/json' }}).subscribe(response => {
-      console.log(response)
       if (response.status != 200) {
         alert("Failed to register user")
       }

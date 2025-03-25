@@ -1,10 +1,13 @@
 import { TeamPlayer } from "./team-player";
 
 export interface Formation {
-  id: number;
   name: string;
-  goalkeeper: number;
+  goalkeeperAmount: number;
+  goalkeeper: TeamPlayer;
   defenderAmount: number;
+  defenders: TeamPlayer[];
   midfielderAmount: number;
+  midfielders: TeamPlayer[];
   attackerAmount: number;
+  attackers: TeamPlayer[];
 }

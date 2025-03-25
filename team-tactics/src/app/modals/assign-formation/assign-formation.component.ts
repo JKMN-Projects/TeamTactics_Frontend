@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TeamService } from '../../services/team.service';
 import { Formation } from '../../interfaces/formation';
@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { positions } from '../../views/team-formation/team-formation.component';
+import { AssignFormation } from '../../interfaces/assign-formation';
 
 @Component({
   selector: 'app-assign-formation',
@@ -26,16 +27,13 @@ import { positions } from '../../views/team-formation/team-formation.component';
   styleUrl: './assign-formation.component.css'
 })
 export class AssignFormationComponent {
-  formationControl = new FormControl(null, [Validators.required]);
+  formationControl = new UntypedFormControl(null, [Validators.required]);
   formations = new Array<Formation>();
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: { teamId: number, formation: Formation, roster: TeamPlayer[] },
+  constructor(@Inject(MAT_DIALOG_DATA) private data: { teamId: number, formation: Formation, formations: Formation[], roster: TeamPlayer[] },
     private teamService: TeamService, private matDialogRef: MatDialogRef<AssignFormationComponent>) {
-    this.teamService.getFormations();
-
-    this.teamService.formations$.subscribe(formations => {
-      this.formations = formations;
-    })
+    this.formations = this.data.formations;
+    this.formationControl.setValue(this.data.formation);
   }
 
   onSubmit() {
@@ -45,7 +43,10 @@ export class AssignFormationComponent {
       alert(errorMsg);
     }
     else {
-      this.teamService.assignFormation(this.data.teamId, this.formationControl.value!);
+      let formation: AssignFormation = { name: (this.formationControl.value! as Formation).name };
+
+      this.teamService.assignFormation(this.data.teamId, formation);
+      this.matDialogRef.close();
     }
   }
 
