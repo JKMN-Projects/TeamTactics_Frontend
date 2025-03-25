@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CreateBulletin } from '../../interfaces/create-bulletin';
 import { MatButtonModule } from '@angular/material/button';
+import { TournamentService } from '../../services/tournament.service';
 
 @Component({
   selector: 'app-create-bulletin',
@@ -25,7 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class CreateBulletinComponent {
   bulletin = new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(500)])
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: { tournamentId: number, userId: number }, private matDialogRef: MatDialogRef<CreateBulletinComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) private data: { tournamentId: number, userId: number }, private matDialogRef: MatDialogRef<CreateBulletinComponent>, private tournamentService: TournamentService) {
   }
 
   onSubmit() {
@@ -35,7 +36,7 @@ export class CreateBulletinComponent {
       userId: this.data.userId
     } as CreateBulletin;
 
-    // Call service
+    this.tournamentService.createBulletin(bulletin, bulletin.tournamentId)
 
     this.matDialogRef.close();
   }

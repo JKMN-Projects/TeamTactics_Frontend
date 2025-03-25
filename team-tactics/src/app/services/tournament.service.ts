@@ -8,6 +8,7 @@ import { CreateTournament } from '../interfaces/create-tournament';
 import { JoinTournament } from '../interfaces/join-tournament';
 import { TournamentMatch } from '../interfaces/tournament-match';
 import { Bulletin } from '../interfaces/bulletin';
+import { CreateBulletin } from '../interfaces/create-bulletin';
 
 @Injectable({
   providedIn: 'root'
@@ -74,11 +75,12 @@ export class TournamentService {
     this.bulletinsSubject$.next(this.bulletins);
 
     this.httpClient.get<Bulletin[]>(this.url + tournamentId.toString() + "/bulletins", this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+      console.log(response);
       this.bulletinsSubject$.next(response);
     });
   }
 
-  createBulletin(bulletin: Bulletin, tournamentId: number): void {
+  createBulletin(bulletin: CreateBulletin, tournamentId: number): void {
     this.httpClient.post<any>(this.url + tournamentId.toString() + "/create-bulletin", bulletin, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (!response.ok) {
         alert(response.title)
