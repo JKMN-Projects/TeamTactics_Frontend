@@ -58,7 +58,8 @@ export class TournamentService {
   getTournamentTeamList(tournamentId: number): void {
     this.tournamentTeamsSubject$.next(this.tournamentTeams);
 
-    this.httpClient.get<TournamentTeam[]>(this.url + tournamentId.toString() + "/teams", this.httpOptions.getHttpOptions()).subscribe(response => {
+    this.httpClient.get<any>(this.url + tournamentId.toString() + "/teams", this.httpOptions.getHttpOptions()).subscribe(response => {
+      console.log(response);
       this.tournamentTeamsSubject$.next(response);
     });
   }
@@ -74,7 +75,7 @@ export class TournamentService {
   getBulletinList(tournamentId: number): void {
     this.bulletinsSubject$.next(this.bulletins);
 
-    this.httpClient.get<Bulletin[]>(this.url + tournamentId.toString() + "/bulletins", this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+    this.httpClient.get<any>(this.url + tournamentId.toString() + "/bulletins", this.httpOptions.getHttpOptions()).subscribe(response => {
       console.log(response);
       this.bulletinsSubject$.next(response);
     });

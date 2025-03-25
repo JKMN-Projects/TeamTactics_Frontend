@@ -18,6 +18,7 @@ import { CreateBulletinComponent } from '../../modals/create-bulletin/create-bul
 import { Router } from '@angular/router';
 import { TeamService } from '../../services/team.service';
 import { PlayerService } from '../../services/player.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-tournament',
@@ -32,6 +33,7 @@ import { PlayerService } from '../../services/player.service';
     MatPaginatorModule,
     MatButtonModule,
     ColumnWidthDirective,
+    MatIconModule,
   ],
   templateUrl: './tournament.component.html',
   styleUrl: './tournament.component.css'
@@ -72,6 +74,7 @@ export class TournamentComponent implements AfterViewInit {
     });
 
     this.tournamentService.bulletins$.subscribe(bulletins => {
+      console.log(bulletins);
       this.bulletins.data = bulletins;
     });
   }
@@ -90,6 +93,8 @@ export class TournamentComponent implements AfterViewInit {
   }
 
   checkTeamOwner(team: TournamentTeam): boolean {
+    console.log("JWT id: " + this.jwtService.getUserId())
+    console.log("Team id: " + team.userId)
     return this.jwtService.getUserId() == team.userId ? true : false;
   }
 

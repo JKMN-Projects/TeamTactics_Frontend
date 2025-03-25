@@ -57,7 +57,7 @@ export class TeamService {
   getTeamPlayers(teamId: number) {
     this.teamPlayersSubject$.next(this.teamPlayers);
 
-    this.httpClient.get<TeamPlayer[]>(this.url + teamId.toString() + '/players', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+    this.httpClient.get<TeamPlayer[]>(this.url + teamId.toString() + '/players', this.httpOptions.getHttpOptions()).subscribe(response => {
       this.teamPlayersSubject$.next(response);
     });
   }
@@ -65,16 +65,8 @@ export class TeamService {
   getTeamPoints(teamId: number) {
     this.teamPointsSubject$.next(this.teamPoints);
 
-    this.httpClient.get<PointTeam[]>(this.url + teamId.toString() + '/Points', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+    this.httpClient.get<PointTeam[]>(this.url + teamId.toString() + '/Points', this.httpOptions.getHttpOptions()).subscribe(response => {
       this.teamPointsSubject$.next(response);
-    });
-  }
-
-  createTeam(team: Team): void {
-    this.httpClient.post<any>(this.url + 'create', team, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (!response.ok) {
-        alert(response.title)
-      }
     });
   }
 
