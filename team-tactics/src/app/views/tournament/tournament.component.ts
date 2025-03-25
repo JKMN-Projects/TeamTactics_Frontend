@@ -16,7 +16,6 @@ import { ColumnWidthDirective } from '../../directives/column-width.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateBulletinComponent } from '../../modals/create-bulletin/create-bulletin.component';
 import { Router } from '@angular/router';
-import { BulletinService } from '../../services/bulletin.service';
 import { TeamService } from '../../services/team.service';
 import { PlayerService } from '../../services/player.service';
 

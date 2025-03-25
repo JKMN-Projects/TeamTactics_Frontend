@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpOptionsService } from './http-options.service';
 import { HttpClient } from '@angular/common/http';
 import { UserTournamentTeam } from '../interfaces/user-tournament-team';
+import { RegisterUserRequest } from '../interfaces/register';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,15 @@ export class UserService {
 
     this.httpClient.get<UserTournamentTeam[]>(this.url + userId.toString() + "/tournaments/teams", this.httpOptions.getHttpOptions()).subscribe(response => {
       this.userTeamsSubject$.next(response);
+    });
+  }
+
+  registerUser(user: RegisterUserRequest): void {
+    this.httpClient.post<any>(this.url + "register", user, { headers: { 'Content-Type': 'application/json' }}).subscribe(response => {
+      console.log(response)
+      if (response.status != 200) {
+        alert("Failed to register user")
+      }
     });
   }
 }

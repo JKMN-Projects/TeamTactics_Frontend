@@ -23,8 +23,8 @@ export class AuthenticationService {
   constructor(private httpClient: HttpClient, private jwt: JwtTokenService) { };
 
   getToken(login: Login) {
-    this.httpClient.post<Token>(this.url + 'login', login).subscribe(x => {
-      this.checkResponse(x);
+    this.httpClient.post<Token>(this.url + 'login', login).subscribe(response => {
+      this.checkResponse(response);
     });
   };
 
@@ -39,24 +39,13 @@ export class AuthenticationService {
       this.loggedInSubject$.next(false);
   };
 
-  register(login: Login) {
-    this.httpClient.post<any>(this.url + 'register', login).subscribe(x => {
-      if (x.status == 200) {
-        alert("User was registered succesfully.");
+  checkResponse(response: Token) {
+    if (response.token.length > 0) {
+      if (response.tokenType == "JWT") {
+        sessionStorage.setItem("accessToken", response.token);
       }
       else {
-        alert("Failed to register user.")
-      }
-    });
-  };
-
-  checkResponse(x: Token) {
-    if (x.token.length > 0) {
-      if (x.tokenType == "JWT") {
-        sessionStorage.setItem("accessToken", x.token);
-      }
-      else {
-        sessionStorage.setItem("refreshToken", x.token);
+        sessionStorage.setItem("refreshToken", response.token);
       }
 
       this.loggedIn = true;

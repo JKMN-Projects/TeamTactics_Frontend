@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CreateBulletin } from '../../interfaces/create-bulletin';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-create-bulletin',
@@ -16,6 +17,7 @@ import { CreateBulletin } from '../../interfaces/create-bulletin';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatButtonModule,
   ],
   templateUrl: './create-bulletin.component.html',
   styleUrl: './create-bulletin.component.css'

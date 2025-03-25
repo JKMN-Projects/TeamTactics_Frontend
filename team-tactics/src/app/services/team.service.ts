@@ -72,7 +72,7 @@ export class TeamService {
 
   createTeam(team: Team): void {
     this.httpClient.post<any>(this.url + 'create', team, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status != 201) {
+      if (!response.ok) {
         alert(response.title)
       }
     });
@@ -80,7 +80,7 @@ export class TeamService {
 
   lockTeam(teamId: number): void {
     this.httpClient.patch<any>(this.url + teamId.toString() + '/lock', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status == 204) {
+      if (response.ok) {
         this.getTeam(teamId);
       }
       else {
@@ -91,7 +91,7 @@ export class TeamService {
 
   assignFormation(teamId: number, formationId: number) {
     this.httpClient.put<any>(this.url + teamId.toString() + '/formations/' + formationId.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status == 204) {
+      if (response.ok) {
         this.getTeam(teamId);
       }
       else {
@@ -102,7 +102,7 @@ export class TeamService {
 
   assignPlayer(request: AssignPlayer, teamId: number): void {
     this.httpClient.put<any>(this.url + teamId.toString() + '/players/add', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status == 204) {
+      if (response.ok) {
         this.getTeam(teamId);
       }
       else {
@@ -113,7 +113,7 @@ export class TeamService {
 
   assignCaptain(request: AssignCaptain, teamId: number): void {
     this.httpClient.put<any>(this.url + teamId.toString() + '/set-captain', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status == 204) {
+      if (response.ok) {
         this.getTeam(teamId);
       }
       else {
@@ -124,7 +124,7 @@ export class TeamService {
 
   removePlayer(teamId: number, playerId: number) {
     this.httpClient.put<any>(this.url + teamId.toString() + '/players/' + playerId.toString() + '/remove', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status == 204) {
+      if (response.ok) {
         this.getTeam(teamId);
       }
       else {
@@ -135,7 +135,7 @@ export class TeamService {
 
   renameTeam(team: Team): void {
     this.httpClient.patch<any>(this.url + '/' + team.id.toString(), team, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status != 200) {
+      if (!response.ok) {
         alert(response.title)
       }
     });
@@ -143,7 +143,7 @@ export class TeamService {
 
   deleteTeam(teamId: number): void {
     this.httpClient.put<any>(this.url + '/' + teamId.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status != 200) {
+      if (!response.ok) {
         alert(response.title)
       }
     });

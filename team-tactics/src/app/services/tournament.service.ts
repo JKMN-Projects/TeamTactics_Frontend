@@ -80,7 +80,7 @@ export class TournamentService {
 
   createBulletin(bulletin: Bulletin, tournamentId: number): void {
     this.httpClient.post<any>(this.url + tournamentId.toString() + "/create-bulletin", bulletin, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.statusCode != 201) {
+      if (!response.ok) {
         alert(response.title)
       }
 
@@ -90,7 +90,7 @@ export class TournamentService {
 
   joinTournament(tournament: JoinTournament): void {
     this.httpClient.post<any>(this.url + 'join', tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.staus == 200) {
+      if (response.ok) {
         this.getTournament(response.body.id);
       }
       else {
@@ -101,10 +101,8 @@ export class TournamentService {
 
   createTournament(tournament: CreateTournament): void {
     this.httpClient.post<any>(this.url, tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-
-      if (response.status == 201) {
-        console.log(response);
-        // this.getTournament(Number.parseInt(response.body.id));
+      if (response.ok) {
+        this.getTournament(response.body.id);
       }
       else {
         alert(response.title);
@@ -114,7 +112,7 @@ export class TournamentService {
 
   updateTournament(tournament: Tournament): void {
     this.httpClient.put<any>(this.url + tournament.id.toString(), tournament, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status != 200) {
+      if (!response.ok) {
         alert(response.title);
       }
     });
@@ -122,7 +120,7 @@ export class TournamentService {
 
   deleteTournament(tournament: Tournament): void {
     this.httpClient.put<any>(this.url + tournament.id.toString(), this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
-      if (response.status != 200) {
+      if (!response.ok) {
         alert(response.title)
       }
     });

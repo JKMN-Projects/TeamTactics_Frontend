@@ -20,8 +20,8 @@ export class CompetitionService {
   getCompetitionList(): void {
     this.competitionsSubject$.next(this.competitions);
 
-    this.httpClient.get<Competition[]>(this.url).subscribe(x => {
-      this.competitionsSubject$.next(x);
+    this.httpClient.get<Competition[]>(this.url).subscribe(response => {
+      this.competitionsSubject$.next(response);
     });
   }
 }

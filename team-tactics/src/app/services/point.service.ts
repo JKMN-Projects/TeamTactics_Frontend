@@ -28,14 +28,14 @@ export class PointService {
   constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
   getPointList(): void {
-    this.httpClient.get<Point[]>(this.url).subscribe(x => {
-      this.pointsSubject$.next(x);
+    this.httpClient.get<Point[]>(this.url).subscribe(response => {
+      this.pointsSubject$.next(response);
     });
   }
 
   getMatchPoints(matchId: number) {
-    this.httpClient.get<PointMatch[]>(this.url + matchId, this.httpOptions.getHttpOptions()).subscribe(x => {
-      this.matchPointsSubject$.next(x);
+    this.httpClient.get<PointMatch[]>(this.url + matchId, this.httpOptions.getHttpOptions()).subscribe(response => {
+      this.matchPointsSubject$.next(response);
     });
   }
 }
