@@ -230,8 +230,12 @@ export class TeamFormationComponent {
 
     this.userRoster.data.forEach(player => {
       playerCount++;
-      captainAssigned = player.captain;
+      if (player.captain) {
+        captainAssigned = true;
+      }
     })
+
+    console.log(playerCount);
 
     return playerCount == 11 && captainAssigned ? false : true;
   }
