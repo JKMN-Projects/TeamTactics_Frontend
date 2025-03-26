@@ -67,7 +67,6 @@ export class TournamentService {
     this.tournamentMatchesSubject$.next(this.tournamentMatches);
 
     this.httpClient.get<TournamentMatch[]>(this.url + tournamentId.toString() + "/matches", this.httpOptions.getHttpOptions()).subscribe(response => {
-      console.log(response);
       this.tournamentMatchesSubject$.next(response);
     });
   }
