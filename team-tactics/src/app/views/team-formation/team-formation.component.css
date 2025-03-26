@@ -114,7 +114,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-top: 150px;
+  margin-top: 130px;
 }
 
 .formation {
@@ -146,6 +146,16 @@
   justify-content: center;
   align-items: center;
   color: white;
+}
+
+.shirt-in-use {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: lightblue;
 }
 
 .container {
@@ -184,4 +194,10 @@
 .disabled {
   pointer-events: none;
   opacity: 0.8;
+}
+
+.remove {
+  position: absolute;
+  bottom: -25px;
+  color: red;
 }

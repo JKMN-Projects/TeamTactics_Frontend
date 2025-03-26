@@ -81,7 +81,7 @@ export class TeamService {
   }
 
   assignCaptain(request: AssignCaptain, teamId: number): void {
-    this.httpClient.put<any>(this.url + teamId.toString() + '/set-captain', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+    this.httpClient.put<any>(this.url + teamId.toString() + '/players/' + request.playerId.toString() + '/set-captain', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (response.ok) {
         this.getTeam(teamId);
       }

@@ -6,7 +6,7 @@
 
       <button mat-raised-button color="primary" (click)="openAssignCaptain()">Set captain</button>
 
-      <button mat-raised-button color="primary" (click)="lockRoster()">Lock roster</button>
+      <button mat-raised-button color="primary" [disabled]="checkLockAvailability()" (click)="lockRoster()">Lock roster</button>
 
     </div>
 
@@ -59,20 +59,23 @@
           <div class="formation">
 
             <div [ngClass]="team.isLocked ? 'player disabled' : 'player'"
-              *ngFor="let a of formation.attackers; let i = index;"
-              (click)="openAssignPlayer(a.positionId, a.positionName, i, a.id)">
+              *ngFor="let a of formation.attackers">
 
-              <img src="assets/player.svg">
+              <img *ngIf="a.id == 0" src="assets/player.svg">
+              <img *ngIf="a.id > 0" [src]="a.captain ? 'assets/player_captain.svg' : 'assets/player_color.svg'">
 
-              <div class="shirt">
+              <div [ngClass]="a.id > 0 ? 'shirt' : 'shirt-in-use'">
 
-                <div class="player-info">
+                <div class="player-info" (click)="openAssignPlayer(a.positionId, a.positionName, a.id)">
 
                   <div class="name">{{a != undefined ? a.firstName : ""}}</div>
                   <div class="name">{{a != undefined ? a.lastName : ""}}</div>
                   <div class="name">{{a != undefined ? (a.id > 0 ? "(" + a.clubName + ")" : a.clubName) : ""}}</div>
+                  <mat-icon *ngIf="a.id > 0" fontIcon="close"class="remove" (click)="removePlayer(a.id)"></mat-icon>
 
                 </div>
+
+                <mat-icon *ngIf="a.id > 0" fontIcon="close" class="remove" (click)="removePlayer(a.id)"></mat-icon>
 
               </div>
 
@@ -83,20 +86,23 @@
           <div class="formation">
 
             <div [ngClass]="team.isLocked ? 'player disabled' : 'player'"
-              *ngFor="let m of formation.midfielders; let i = index;"
-              (click)="openAssignPlayer(m.positionId, m.positionName, i, m.id)">
+              *ngFor="let m of formation.midfielders; let i = index;">
 
-              <img src="assets/player.svg">
+              <img *ngIf="m.id == 0" src="assets/player.svg">
+              <img *ngIf="m.id > 0" [src]="m.captain ? 'assets/player_captain.svg' : 'assets/player_color.svg'">
 
               <div class="shirt">
 
-                <div class="player-info">
+                <div class="player-info" (click)="openAssignPlayer(m.positionId, m.positionName, m.id)">
 
                   <div class="name">{{m != undefined ? m.firstName : ""}}</div>
                   <div class="name">{{m != undefined ? m.lastName : ""}}</div>
                   <div class="name">{{m != undefined ? (m.id > 0 ? "(" + m.clubName + ")" : m.clubName) : ""}}</div>
+                  <mat-icon *ngIf="m.id > 0" fontIcon="close"class="remove" (click)="removePlayer(m.id)"></mat-icon>
 
                 </div>
+
+                <mat-icon *ngIf="m.id > 0" fontIcon="close" class="remove" (click)="removePlayer(m.id)"></mat-icon>
 
               </div>
 
@@ -107,14 +113,14 @@
           <div class="formation">
 
             <div [ngClass]="team.isLocked ? 'player disabled' : 'player'"
-              *ngFor="let d of formation.defenders; let i = index;"
-              (click)="openAssignPlayer(d.positionId, d.positionName, i, d.id)">
+              *ngFor="let d of formation.defenders; let i = index;">
 
-              <img src="assets/player.svg">
+              <img *ngIf="d.id == 0" src="assets/player.svg">
+              <img *ngIf="d.id > 0" [src]="d.captain ? 'assets/player_captain.svg' : 'assets/player_color.svg'">
 
               <div class="shirt">
 
-                <div class="player-info">
+                <div class="player-info" (click)="openAssignPlayer(d.positionId, d.positionName, d.id)">
 
                   <div class="name">{{d != undefined ? d.firstName : ""}}</div>
                   <div class="name">{{d != undefined ? d.lastName : ""}}</div>
@@ -122,6 +128,8 @@
 
                 </div>
 
+                <mat-icon *ngIf="d.id > 0" fontIcon="close" class="remove" (click)="removePlayer(d.id)"></mat-icon>
+
               </div>
 
             </div>
@@ -131,9 +139,10 @@
           <div class="formation">
 
             <div [ngClass]="team.isLocked ? 'player disabled' : 'player'"
-              (click)="openAssignPlayer(formation.goalkeeper.positionId, formation.goalkeeper.positionName, 0, formation.goalkeeper.id)">
+              (click)="openAssignPlayer(formation.goalkeeper.positionId, formation.goalkeeper.positionName, formation.goalkeeper.id)">
 
-              <img src="assets/player.svg">
+              <img *ngIf="formation.goalkeeper.id == 0" src="assets/player.svg">
+              <img *ngIf="formation.goalkeeper.id > 0" [src]="formation.goalkeeper.captain ? 'assets/player_captain.svg' : 'assets/player_color.svg'">
 
               <div class="shirt">
 

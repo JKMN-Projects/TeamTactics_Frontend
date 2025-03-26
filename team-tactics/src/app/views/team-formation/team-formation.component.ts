@@ -45,6 +45,7 @@ export enum positions {
 export class TeamFormationComponent {
   displayedColumns: string[] = ['name', 'position', 'club', 'captain'];
   userRoster = new MatTableDataSource<TeamPlayer>();
+  teamPlayers = new Array<TeamPlayer>();
   players = new Array<Player>();
   formation: Formation;
   team: Team;
@@ -130,7 +131,7 @@ export class TeamFormationComponent {
   ];
 
   constructor(private matDialog: MatDialog, private playerService: PlayerService, private teamService: TeamService) {
-    this.formation = this.formations[2];
+    this.formation = this.getFormation("4-4-2");
 
     this.team = {
       id: 0,
@@ -160,7 +161,7 @@ export class TeamFormationComponent {
   }
 
   getFormation(formationName: string) {
-    return this.formations.find(formation => formation.name == formationName)!;
+    return JSON.parse(JSON.stringify(this.formations.find(formation => formation.name == formationName)!));
   }
 
   emptyPlayerObject(positionId: number, amount: number): TeamPlayer[] {
@@ -201,16 +202,17 @@ export class TeamFormationComponent {
   }
 
   setFormation() {
+
     this.userRoster.data.forEach(player => {
       switch (player.positionId) {
         case positions.Attacker:
           this.formation.attackers[this.formation.attackers.findIndex(a => a.id == 0)] = player;
           break;
         case positions.Midfielder:
-          this.formation.midfielders[this.formation.midfielders.findIndex(a => a.id == 0)] = player;
+          this.formation.midfielders[this.formation.midfielders.findIndex(m => m.id == 0)] = player;
           break;
         case positions.Defender:
-          this.formation.defenders[this.formation.defenders.findIndex(a => a.id == 0)] = player;
+          this.formation.defenders[this.formation.defenders.findIndex(d => d.id == 0)] = player;
           break;
         case positions.Goalkeeper:
           this.formation.goalkeeper = player;
@@ -219,40 +221,8 @@ export class TeamFormationComponent {
           break;
       }
     })
+
   }
-
-  // getPlayersByPositionId(positionId: number) {
-  //   let temp: Array<TeamPlayer> = this.userRoster.data.filter(player => player.positionId = positionId);
-
-  //   if (this.formation) {
-  //     switch (positionId) {
-  //       case positions.Attacker:
-  //         if (temp.length < this.formation.attackerAmount) {
-  //           this.formation.attackers = temp.concat(this.emptyPlayerObject(positions.Attacker, this.formation.attackerAmount - temp.length));
-  //         }
-  //         break;
-  //       case positions.Midfielder:
-  //         if (temp.length < this.formation.midfielderAmount) {
-  //           temp = temp.concat(this.emptyPlayerObject(positions.Midfielder, this.formation.midfielderAmount - temp.length));
-  //         }
-  //         break;
-  //       case positions.Defender:
-  //         if (temp.length < this.formation.defenderAmount) {
-  //           temp = temp.concat(this.emptyPlayerObject(positions.Defender, this.formation.defenderAmount - temp.length));
-  //         }
-  //         break;
-  //       case positions.Goalkeeper:
-  //         if (temp.length < this.formation.goalkeeperAmount) {
-  //           temp.push(this.emptyPlayerObject(positions.Goalkeeper, 1)[0])
-  //         }
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   }
-
-  //   return temp;
-  // }
 
   checkLockAvailability() {
     let playerCount = 0;
@@ -263,7 +233,7 @@ export class TeamFormationComponent {
       captainAssigned = player.captain;
     })
 
-    return playerCount == 11 && captainAssigned ? true : false;
+    return playerCount == 11 && captainAssigned ? false : true;
   }
 
   lockRoster() {
@@ -289,12 +259,10 @@ export class TeamFormationComponent {
         userRoster: this.userRoster.data,
         teamId: this.team.id
       }
-    }).afterClosed().subscribe(result => {
-      this.userRoster.data = result;
     })
   }
 
-  openAssignPlayer(positionId: number, positionName: string, index: number, playerIdToRemove: number) {
+  openAssignPlayer(positionId: number, positionName: string, playerIdToRemove: number) {
     if (playerIdToRemove > 0) {
       this.teamService.removePlayer(this.team.id, playerIdToRemove)
     }
@@ -307,10 +275,6 @@ export class TeamFormationComponent {
         userRoster: this.userRoster.data,
         playerList: this.players.filter(x => x.positionId == positionId),
         teamId: this.team.id
-      }
-    }).afterClosed().subscribe(playerAssigned => {
-      if (index != undefined && playerAssigned != undefined) {
-        this.teamService.assignPlayer(playerAssigned, this.team.id);
       }
     })
   }
