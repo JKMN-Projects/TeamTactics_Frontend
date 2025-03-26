@@ -64,9 +64,9 @@
               <img *ngIf="a.id == 0" src="assets/player.svg">
               <img *ngIf="a.id > 0" [src]="a.captain ? 'assets/player_captain.svg' : 'assets/player_color.svg'">
 
-              <div [ngClass]="a.id > 0 ? 'shirt' : 'shirt-in-use'">
+              <div class="shirt" (click)="openAssignPlayer(a.positionId, a.positionName, a.id)">
 
-                <div class="player-info" (click)="openAssignPlayer(a.positionId, a.positionName, a.id)">
+                <div class="player-info">
 
                   <div class="name">{{a != undefined ? a.firstName : ""}}</div>
                   <div class="name">{{a != undefined ? a.lastName : ""}}</div>
@@ -75,9 +75,9 @@
 
                 </div>
 
-                <mat-icon *ngIf="a.id > 0" fontIcon="close" class="remove" (click)="removePlayer(a.id)"></mat-icon>
-
               </div>
+
+              <mat-icon *ngIf="a.id > 0" fontIcon="close" class="remove" (click)="removePlayer(a.id)"></mat-icon>
 
             </div>
 
@@ -91,9 +91,9 @@
               <img *ngIf="m.id == 0" src="assets/player.svg">
               <img *ngIf="m.id > 0" [src]="m.captain ? 'assets/player_captain.svg' : 'assets/player_color.svg'">
 
-              <div class="shirt">
+              <div class="shirt" (click)="openAssignPlayer(m.positionId, m.positionName, m.id)">
 
-                <div class="player-info" (click)="openAssignPlayer(m.positionId, m.positionName, m.id)">
+                <div class="player-info">
 
                   <div class="name">{{m != undefined ? m.firstName : ""}}</div>
                   <div class="name">{{m != undefined ? m.lastName : ""}}</div>
@@ -102,9 +102,9 @@
 
                 </div>
 
-                <mat-icon *ngIf="m.id > 0" fontIcon="close" class="remove" (click)="removePlayer(m.id)"></mat-icon>
-
               </div>
+
+              <mat-icon *ngIf="m.id > 0" fontIcon="close" class="remove" (click)="removePlayer(m.id)"></mat-icon>
 
             </div>
 
@@ -118,9 +118,9 @@
               <img *ngIf="d.id == 0" src="assets/player.svg">
               <img *ngIf="d.id > 0" [src]="d.captain ? 'assets/player_captain.svg' : 'assets/player_color.svg'">
 
-              <div class="shirt">
+              <div class="shirt" (click)="openAssignPlayer(d.positionId, d.positionName, d.id)">
 
-                <div class="player-info" (click)="openAssignPlayer(d.positionId, d.positionName, d.id)">
+                <div class="player-info">
 
                   <div class="name">{{d != undefined ? d.firstName : ""}}</div>
                   <div class="name">{{d != undefined ? d.lastName : ""}}</div>
@@ -128,9 +128,9 @@
 
                 </div>
 
-                <mat-icon *ngIf="d.id > 0" fontIcon="close" class="remove" (click)="removePlayer(d.id)"></mat-icon>
-
               </div>
+
+              <mat-icon *ngIf="d.id > 0" fontIcon="close" class="remove" (click)="removePlayer(d.id)"></mat-icon>
 
             </div>
 
