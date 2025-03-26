@@ -221,10 +221,21 @@ export class TeamFormationComponent {
           break;
       }
     })
+  }
 
+  checkIfLocked() {
+    if (this.team.isLocked) {
+      return true;
+    }
+
+    return false;
   }
 
   checkLockAvailability() {
+    if (this.checkIfLocked()) {
+      return true;
+    }
+
     let playerCount = 0;
     let captainAssigned = false;
 
@@ -234,8 +245,6 @@ export class TeamFormationComponent {
         captainAssigned = true;
       }
     })
-
-    console.log(playerCount);
 
     return playerCount == 11 && captainAssigned ? false : true;
   }

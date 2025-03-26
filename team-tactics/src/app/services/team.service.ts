@@ -48,7 +48,7 @@ export class TeamService {
   }
 
   lockTeam(teamId: number): void {
-    this.httpClient.patch<any>(this.url + teamId.toString() + '/lock', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+    this.httpClient.patch<any>(this.url + teamId.toString() + '/lock', null, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (response.ok) {
         this.getTeam(teamId);
       }
@@ -81,7 +81,6 @@ export class TeamService {
   }
 
   assignCaptain(request: AssignCaptain, teamId: number): void {
-    console.log(this.url + teamId.toString() + '/players/' + request.playerId.toString() + '/set-captain');
     this.httpClient.put<any>(this.url + teamId.toString() + '/players/' + request.playerId.toString() + '/set-captain', null, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (response.ok) {
         this.getTeam(teamId);
@@ -93,7 +92,6 @@ export class TeamService {
   }
 
   removePlayer(teamId: number, playerId: number) {
-    console.log(this.url + teamId.toString() + '/players/' + playerId.toString() + '/remove');
     this.httpClient.put<any>(this.url + teamId.toString() + '/players/' + playerId.toString() + '/remove', null, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (response.ok) {
         this.getTeam(teamId);

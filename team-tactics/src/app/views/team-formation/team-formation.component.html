@@ -4,7 +4,7 @@
 
     <div class="row-space-between-center">
 
-      <button mat-raised-button color="primary" (click)="openAssignCaptain()">Set captain</button>
+      <button mat-raised-button color="primary" [disabled]="checkIfLocked()" (click)="openAssignCaptain()">Set captain</button>
 
       <button mat-raised-button color="primary" [disabled]="checkLockAvailability()" (click)="lockRoster()">Lock roster</button>
 
@@ -45,7 +45,7 @@
 
     <div class="formation-container">
 
-      <button mat-raised-button color="primary" (click)="openAssignFormation()">Set formation</button>
+      <button mat-raised-button color="primary" [disabled]="checkIfLocked()" (click)="openAssignFormation()">Set formation</button>
 
       <div class="pitch">
 

@@ -80,7 +80,7 @@
               <ng-container matColumnDef="setTeam">
                 <th mat-header-cell *matHeaderCellDef>Set team</th>
                 <td mat-cell *matCellDef="let team">
-                  <button mat-button color="primary" [disabled]="!checkTeamOwner(team)" (click)="navigateToCreateTeam(team)">
+                  <button mat-button color="primary" *ngIf="checkTeamOwner(team)" (click)="navigateToCreateTeam(team)">
                     <mat-icon fontIcon="edit"></mat-icon>
                   </button>
                 </td>

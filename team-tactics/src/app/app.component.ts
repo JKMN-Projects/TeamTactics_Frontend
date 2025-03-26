@@ -39,6 +39,9 @@ export class AppComponent {
 
         this.authService.checkResponse(token);
       }
+      else {
+        this.authService.removeToken();
+      }
     }
   }
 

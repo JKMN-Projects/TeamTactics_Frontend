@@ -50,7 +50,7 @@ export class AuthenticationService {
 
       this.loggedIn = true;
       this.loggedInSubject$.next(true);
-    };
+    }
   };
 
   isAuthenticated(): boolean {
