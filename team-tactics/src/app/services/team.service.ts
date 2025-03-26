@@ -81,7 +81,8 @@ export class TeamService {
   }
 
   assignCaptain(request: AssignCaptain, teamId: number): void {
-    this.httpClient.put<any>(this.url + teamId.toString() + '/players/' + request.playerId.toString() + '/set-captain', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+    console.log(this.url + teamId.toString() + '/players/' + request.playerId.toString() + '/set-captain');
+    this.httpClient.put<any>(this.url + teamId.toString() + '/players/' + request.playerId.toString() + '/set-captain', null, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (response.ok) {
         this.getTeam(teamId);
       }
@@ -92,7 +93,8 @@ export class TeamService {
   }
 
   removePlayer(teamId: number, playerId: number) {
-    this.httpClient.put<any>(this.url + teamId.toString() + '/players/' + playerId.toString() + '/remove', this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
+    console.log(this.url + teamId.toString() + '/players/' + playerId.toString() + '/remove');
+    this.httpClient.put<any>(this.url + teamId.toString() + '/players/' + playerId.toString() + '/remove', null, this.httpOptions.getHttpOptionsWithObserve()).subscribe(response => {
       if (response.ok) {
         this.getTeam(teamId);
       }
