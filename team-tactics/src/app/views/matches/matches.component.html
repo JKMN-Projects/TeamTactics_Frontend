@@ -11,7 +11,7 @@
 
       <ng-container matColumnDef="score">
         <th mat-header-cell *matHeaderCellDef>Score</th>
-        <td mat-cell *matCellDef="let match">{{ match.homeTeamScore + " - " + match.awayteamScore }}</td>
+        <td mat-cell *matCellDef="let match">{{ match.homeTeamScore + " - " + match.awayTeamScore }}</td>
       </ng-container>
 
       <ng-container matColumnDef="awayTeam">
@@ -20,8 +20,8 @@
       </ng-container>
 
       <ng-container matColumnDef="timestamp">
-        <th mat-header-cell *matHeaderCellDef>Timestamp</th>
-        <td mat-cell *matCellDef="let match">{{ match.clubName }}</td>
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let match">{{ match.matchDate }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

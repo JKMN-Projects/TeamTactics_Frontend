@@ -19,6 +19,11 @@
         <td mat-cell *matCellDef="let team">{{ team.pointCategory }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="pointAmount">
+        <th mat-header-cell *matHeaderCellDef>Point amount</th>
+        <td mat-cell *matCellDef="let team">{{ team.pointAmount }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="occurrences">
         <th mat-header-cell *matHeaderCellDef>Occurrences</th>
         <td mat-cell *matCellDef="let team">{{ team.occurrences }}</td>

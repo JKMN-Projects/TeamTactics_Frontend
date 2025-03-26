@@ -20,7 +20,7 @@ import { TeamService } from '../../services/team.service';
 export class TeamPointsComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  displayedColumns = ["playerName", "clubName", "pointCategoryName", "occurrences", "totalPoints"];
+  displayedColumns = ["playerName", "clubName", "pointCategoryName", "pointAmount", "occurrences", "totalPoints"];
 
   teamPoints = new MatTableDataSource<PointTeam>();
 

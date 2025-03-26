@@ -41,6 +41,7 @@ export class AppComponent {
       }
       else {
         this.authService.removeToken();
+        this.router.navigateByUrl("");
       }
     }
   }
